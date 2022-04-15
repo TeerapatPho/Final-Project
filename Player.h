@@ -1,3 +1,14 @@
+vector<card> some_func() {
+    vector<card> situation_card_deck;
+
+    situation_card_deck.push_back(card("Hungry!","You forgot to eat meal, Your energy have been decrease.",0,0,-15,0)); //0 fullness
+    situation_card_deck.push_back(card("Are you serious?","You are stressfull, Your health and energy have been decrease.",-10,0,-5,0)); 
+    situation_card_deck.push_back(card("Sick Stomach","You have an upset stomach, you must go to the hospital.",0,0,0,-45)); //2 health
+    //situation_card.push_back(card("","You have an upset stomach, you must go to the hospital.",0,0,0,-40));
+
+    return situation_card_deck;
+}
+
 class player { // พวกล็อตเตอรี่กับตู้เย็นและผักแช่แข็งทั้งหลายกับพวกสัตว์เลี้ยง และอื่นๆ ถ้ามีก็ต้องมีกระเป๋าเก็บของพวกนี้ด้วย
 private:
     string name;//ชื่อ
@@ -35,14 +46,10 @@ public:
     int get_and_change_account_balance(int=0);
     int get_and_change_stress(int=0);
     void display(); //สำหรับแสดงผลเพื่อดูว่าค่าที่บันทึกถูกมั้ย
-    void get_card();
+    void get_card(card);
     void calculation_card_by_stat();
 };
-vector<card> situation_card_deck;
-situation_card_deck.push_back(card("Hungry!","You forgot to eat meal, Your energy have been decrease.",0,0,-15,0)); //0 fullness
-situation_card_deck.push_back(card("Are you serious?","You are stressfull, Your health and energy have been decrease.",-10,0,-5,0)); 
-situation_card_deck.push_back(card("Sick Stomach","You have an upset stomach, you must go to the hospital.",0,0,0,-45)); //2 health
-//situation_card.push_back(card("","You have an upset stomach, you must go to the hospital.",0,0,0,-40));
+
 player::player(string name_input){ 
   name = name_input; 
   metier = "None"; 
@@ -61,7 +68,6 @@ player::player(string name_input){
 }
 player::~player(){
   cout << "Player " << name << "has been deleted" << endl;
-  //destructer ประกาศว่า player คนนี้ถูกลบแล้ว
 }
 string player::get_and_change_metier(string metier_input){
   if(metier_input != "") metier = metier_input; 
@@ -76,11 +82,11 @@ string player::get_and_change_current_place(string current_place_input){
   return current_place;
 }
 int player::get_and_change_education(int education_input){
-  education += education_input; //ตรงกระเป๋าเก็บของเราสร้างเป็น struct ใน private ไว้นะ มันจะดึงไปใช้ยากปะ เอ่ออ กำลังจะสร้าง55555 อ่อออ โอเคคค
+  education += education_input;
   if(education<0) education=0;
   return education;
 }
-int player::get_and_change_workEXP(int work_EXP_input){ // okie krub
+int player::get_and_change_workEXP(int work_EXP_input){\
   work_EXP += work_EXP_input; 
   return work_EXP;
 }
@@ -114,7 +120,7 @@ int player::get_and_change_energy(int energy_input){
   if(energy<0) energy = 0;
   return energy;
 }
-int player::get_and_change_salary(int salary_input){ //
+int player::get_and_change_salary(int salary_input){
   salary = salary_input; 
   if(salary<0) salary = 0;
   return salary;
@@ -145,23 +151,19 @@ void player::display(){
   cout<<"Account Balance : "<<account_balance<<endl;
 }
 
-//สร้าง method สำหรับคำนวณว่าต้องโดนการ์ดอะไรบ้าง เอาแค่การ์ดที่เกิดตามสถานการณ์ เช่นหิว
 void player::get_card(card card_input){ 
   vector<int> status = card_input.get_value();
   cout << card_input.get_card_name() << endl;
   cout << card_input.get_card_desc() << endl;
-  this->get_and_change_energy(status[2]);//ตรงพวกนี้ใช้ this ถูกมั้ยนะ
-  this->get_and_change_health(status[0]);
-  this->get_and_change_money(status[3]);
-  this->get_and_change_happiness(status[1]);
+  get_and_change_energy(status[2]);
+  get_and_change_health(status[0]);
+  get_and_change_money(status[3]);
+  get_and_change_happiness(status[1]);
   cout << "================================" << endl;
 }
-void calculation_card_by_stat(){
-  if(this->get_and_change_fullness()<80) this->get_card(situation_card_deck[0]);
-  if(this->get_and_change_happiness()<70) this->get_card(situation_card_deck[1]); //ตรงพวกนี้ใช้ this ถูกมั้ยนะ
-  if(this->get_and_change_health()<70) this->get_card(situation_card_deck[2]);
+void player::calculation_card_by_stat(){
+  vector<card> situation_card_deck = some_func();
+  if(fullness<80) get_card(situation_card_deck[0]);
+  if(happiness<70) get_card(situation_card_deck[1]);
+  if(health<70) get_card(situation_card_deck[2]);
 }
-
-
-//สร้าง method สำหรับรับค่าการ์ดเข้ามา แสดงผล แล้วแก้ไข stat player 
-//อันบนถ้าอยากทำให้ดูดีหน่อยก็สร้างการ์ดแล้วส่งค่ามาให้ method ล่างก็ได้
