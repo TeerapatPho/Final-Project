@@ -1,7 +1,7 @@
 vector<card> gen_pEventCard() {
     vector<card> deck;
-    deck.push_back(card("Traffic jamms","You have been stuck on the road for a long time. That's made you late for work."),0,0,0,-29);
-    deck.push_back(card("Online gambling","Macau Macau Macau888 (>~<)!"),0,-1,0,-51);
+    deck.push_back(card("Traffic jamms","You have been stuck on the road for a long time. That's made you late for work.",0,0,0,-29));
+    deck.push_back(card("Online gambling","Macau Macau Macau888 (>~<)!",0,-1,0,-51));
     deck.push_back(card("How you doing?","This weekend you chatted up the wrong person at the bar.",-13,0,0,0));
     deck.push_back(card("Can I have some money, please?","I gave money for a lamp beggar that can ran after I walk away.",0,0,0,-20));
     deck.push_back(card("Fox stole a bag","The bag was stolen by D*r* Sw*p*r!",0,0,0,-38));
@@ -17,7 +17,7 @@ vector<card> gen_pEventCard() {
     deck.push_back(card("Where's my bag?","You went to a grocery store and realize that you didn't take the bag with you. The store didn't give you a bag to you too!",30,-25,0,0));
     deck.push_back(card("","",0,0,0,0));
     deck.push_back(card("","",0,0,0,0));
-    deck.push_back(card("Afforestation with friends","You spent the weekend participating in a Forest Garden Programs in Kenya."),0,6,0,24);
+    deck.push_back(card("Afforestation with friends","You spent the weekend participating in a Forest Garden Programs in Kenya.",0,6,0,24));
     deck.push_back(card("Oh! that's SOMCHAI","You met Somchai in your dream. Take all my luck and be wealthy he said",0,10,0,101));
     
     return deck;

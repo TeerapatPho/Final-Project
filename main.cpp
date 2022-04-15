@@ -8,6 +8,16 @@
 
 using namespace std;
 
+/* class prototype */
+class card;
+class player;
+class place;
+class sell_object;
+class board;
+class game;
+
+/* function prototype */
+
 #include "Card.h"
 #include "Player.h"
 #include "Place.h"
@@ -23,9 +33,6 @@ int main() {
     // tech_coop a;
     // job_office b;
     // cout << b.check_requirement(test, a.get_name(), "Janistor3");
-
-    board x;
-    x.print_board();
     
     // player i("hello"),p1("Palarp"),p2("Fan"),p3("Kamme");
     // p1.display();

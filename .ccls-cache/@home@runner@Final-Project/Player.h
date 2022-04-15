@@ -26,7 +26,7 @@ private:
     int salary; //เงินเดือน
     int account_balance;//เงินในบัญชี
     int stress; //ความเครียด
-    
+    //เอากระเป๋าออกไปหรอออ
 public:
     player(string=""); //รับชื่อผู้เล่น
     ~player();
