@@ -35,6 +35,7 @@ T selection_menu(vector<T>, vector<T>);
 #include "Game.h"
 
 int main() {
+    srand(time(0));
     std::cout << "Hello World!\n";
 
     // player test("test");
@@ -44,7 +45,7 @@ int main() {
     // job_office b;
     // cout << b.req_route(test, &a, "Janitor") << endl;;
 
-    board b;
+    // board b;
     // b.print_board("Culture Center", 500);
     
 
@@ -54,9 +55,8 @@ int main() {
 
     // option -> game //map(1,2,3,4,5)
     
-
-    game game_(10);
-    game_.place_gui("Cluckers");
+    // game game_(10);
+    // game_.place_ui("Cluckers");
 }
 
 template<typename ClassObj>
@@ -95,14 +95,14 @@ T selection_menu(vector<T> choices, vector<T> addition) {
         s_board[height-1][i] = addition[i];
 
 
-    // print board
-    for(int i = 0; i < s_board.size(); i++) {
+    // print board // อันนี้ลบก็ได้นะ แค่ให้แสดงหน้าตาเฉยๆว่าตัวเมนูจะมีหน้าตาเป็นไง
+    for(int i = 0; i < s_board.size(); i++) { 
         if(i == s_board.size() - 1) cout << endl;
         for(int j = 0; j < 3; j++)
             cout << setw(25) << s_board[i][j];
         cout << endl;
     }
-    // เหลือให้เลือกได้ด้วย w,a,s,d
+    // เหลือให้เลือกได้ด้วย w,a,s,d  
     // กับรีเทิร์นค่าตัวเลือกกลับมา
     return "Work";
 }

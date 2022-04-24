@@ -1,10 +1,11 @@
 vector<card> gen_pEventCard() { // generate personal card
     vector<card> deck;
-    deck.push_back(card("Traffic jamms","You have been stuck on the road for a long time. That's made you late for work.",0,0,0,-29));
+    deck.push_back(card("Traffic jamms","You have been stuck on the road for a long time. That's made you late for work. If only you have a elgooG Map",0,0,0,-29)); // linked with elgooG Map
+    deck.push_back(card("You is on fire","Literally a fire on you!!, If only you have a Smoke Detector to protect you and Fire extinguisher to decrease damage.",0,0,0,-29)); // linked with smoke and fire ext.
+    deck.push_back(card("Fox stole a bag","The bag was stolen by D*r* Sw*p*r! If only you have a CCTV.",0,0,0,-38)); // liked with CCTV
     deck.push_back(card("Online gambling","Macau Macau Macau888 (>~<)!",0,-1,0,-51));
     deck.push_back(card("How you doing?","This weekend you chatted up the wrong person at the bar.",-13,0,0,0));
     deck.push_back(card("Can I have some money, please?","I gave money for a lamp beggar that can ran after I walk away.",0,0,0,-20));
-    deck.push_back(card("Fox stole a bag","The bag was stolen by D*r* Sw*p*r!",0,0,0,-38));
     deck.push_back(card("Enemies is coming","This weekend your toilet was broken and you had to buy a new one.",0,0,0,-65));
     deck.push_back(card("Too many development project","The government wants your money for a new road and some submarine.",0,0,0,-25));
     deck.push_back(card("Catch that Jerry","You found a Jerry under your bed this weekend. So, you decided to borrow Tom to help you.",0,0,0,-17));
@@ -20,23 +21,22 @@ vector<card> gen_pEventCard() { // generate personal card
     deck.push_back(card("Kids will be kids","You were greatly entertained by a bus full of kidergareners this weekend.",0,33,0,-39));
     deck.push_back(card("Online gambling","Wow, you so lucky!",0,0,0,12));
     deck.push_back(card("Afforestation with friends","You spent the weekend participating in a Forest Garden Programs in Kenya.",0,6,0,24));
-    deck.push_back(card("Oh! that's SOMCHAI","You met Somchai in your dream. Take all my luck and be wealthy he said",0,10,0,101));
+    deck.push_back(card("Oh! that's SOMCHAI","You met Somchai in your dream. Take all my luck and be wealthy he said",0,10,0,188));
     
     return deck;
 }
 
-vector<card> gen_rEventCard() {
+vector<card> gen_rEventCard(int round) { // round card
     vector<card> deck;
-    
-    // event ของแต่ละรอบ
-    // การ์ดที่โดนเหมือนกันทุกคน สร้างในนี้
 
     // notification
-    deck.push_back(c_card("! Crime alert !","Now a pickpocket has escaped from the jail! Please beware your money and move it to the bank.",0,0));
+    deck.push_back(c_card("! Crime alert !","Now a pickpocket has escaped from the jail! Please beware your money and move it to the bank. Moreover, you can buy ... to protect yourself to!",0,0));
     // during crime
-    deck.push_back(c_card("You were robbed","The famous pickpocket has stolen your wallet. (T^T)",-100,0)); //ค่อยไปตั้งค่าเงินที่ขโมยใน player ทับไปอีกทีนึง
+    deck.push_back(c_card("You were robbed","The famous pickpocket has stolen your wallet (T^T).",-100,0)); //ค่อยไปตั้งค่าเงินที่ขโมยใน player ทับไปอีกทีนึง
     // end
     deck.push_back(c_card("Crime end","The polices have been able to catch the pickpocket, you can safly walk the streets agian.",0,0));
+
+    deck.push_back(c_card("Time to pay rent!","Do not forget or got debt ~",0,0));
     
     return deck;
 }
@@ -47,15 +47,19 @@ private:
     int curr_round;
     queue<player *> player_q;
     board *play_board;
+    vector<place*> plList;
     vector<card> deck_p;
-    vector<card> deck_r;    
+    vector<card> deck_r; 
 public:
     game(int);
     ~game();
     void change_round();
     void next_player_turn();
     void score_cal();
-    void place_gui(string);
+    void place_ui(string);
+
+    place* name2placePtr(string plName);
+}
 };
 
 game::game(int max_round) {
@@ -72,7 +76,20 @@ game::game(int max_round) {
     play_board = new board;
 
     deck_p = gen_pEventCard();
-    deck_r = gen_rEventCard();
+    deck_r = gen_rEventCard(max_round);
+
+    plList.push_back(new restaurant);
+    plList.push_back(new gym);
+    plList.push_back(new home);
+    plList.push_back(new market);
+    plList.push_back(new apartment);
+    plList.push_back(new bank);
+    plList.push_back(new tech_coop);
+    plList.push_back(new job_office);
+    plList.push_back(new art);
+    plList.push_back(new school);
+    plList.push_back(new it_store);
+    plList.push_back(new mall);
 }
 
 
@@ -90,16 +107,31 @@ game::~game() {
 }
 
 void game::change_round() {
+    static int start = rand() % max_round;
+    static int stop = rand() % (max_round/5) + start;
+
     if (++curr_round == max_round+1) return;
     for(int i = 0; i < player_q.size(); i++) {
         //reset player property
         player_q.front()->get_and_change_energy(-player_q.front()->get_and_change_energy() + 200);
         player_q.front()->get_and_change_current_place(player_q.front()->get_and_change_home());
         
-        // player_q.front()->get_card();
-        /* crime event ภาเอง */
+        if(curr_round-1 == start) player_q.front()->get_card(deck_r[0]);
+        else if(curr_round <= stop && curr_round >= start) {
+            double rate ; //rate โดน
+            if(player_q.front()->get_and_change_home() == "Fancy Housing") rate = 1/3;
+            else rate = 2/3;
+            //ปืนช้อชไฟฟ้า
+            if((player_q.front()->get_bag())["Stun Gun"]) rate -= 10/100;
+            if(rand()%100+1 < rate*100) player_q.front()->get_card( deck_r[1] );
+        }
+        else if(curr_round+1 == stop) player_q.front()->get_card(deck_r[2]);
+
+        if (curr_round % 4 == 0) {
+            player_q.front()->get_card(deck_r[3]);
+        }
         
-        // change to next player
+        // change to next 
         player* temp = player_q.front();
         player_q.pop();
         player_q.push(temp);
@@ -109,11 +141,11 @@ void game::change_round() {
 void game::next_player_turn() {
     player* p = player_q.front();
 
-    //อย่าลืมกันว่า round แรกห้ามหิว
-    p->calculation_card_by_stat();
-    srand(time(0)); // rand() /*ย้ายไปเมนหรือคอนตั๊ก*/
-    int num = rand() % deck_p.size();
-    p->get_card(deck_p[num]);
+    if(curr_round > 1) {
+        p->calculation_card_by_stat();
+        int num = rand() % deck_p.size();
+        p->get_card(deck_p[num]);
+    }
     
     do {
 
@@ -123,15 +155,20 @@ void game::next_player_turn() {
             fflush(stdin);
             getline(cin, plname);
             if (play_board->get_plIndex(plname) == -1) continue;
-            //play_board->cal_distance_template(p->get_and_change_current_place(), plname); //get distance and do decrease energy
-            //above line just return distance // do something else
+            int distance = play_board->cal_distance_template(p->get_and_change_current_place(), plname); //get distance and do decrease energy
+            if (player_q.front()->get_and_change_car_type() == "Walk") p->get_and_change_energy(-distance * 10);
+            else if (player_q.front()->get_and_change_car_type() == "Vexportation Pass") p->get_and_change_energy(-distance * 8);
+            else if (player_q.front()->get_and_change_car_type() == "Electric Scooter") p->get_and_change_energy(-distance * 6);
+            else if (player_q.front()->get_and_change_car_type() == "Nikola Electric") p->get_and_change_energy(-distance * 3);
+
             p->get_and_change_current_place(plname);
+            
             break;
         } while (true);
-        if (p->get_and_change_energy() == 0) break; // check energy >= 0
+        if (p->get_and_change_energy() <= 0) break; // check energy >= 0
 
         //do thing in place;
-        place_gui();
+        place_ui(plname);
         // buy something or doing job or do transaction or exit buy interface or anything else
         // if buy check energy >= need and check money
         
@@ -155,10 +192,7 @@ void game::score_cal() {
     }
 }
 
-void game::place_gui(string curr) {
-    // หรือทำเป็น if else ดีหว่า ได้นะ5555
-    // จะผ่าน *player ใน lambda ยังไงนะ;-;
-    // https://www.geeksforgeeks.org/lambda-expression-in-c/ จะได้เขียนฟังก์ชันในฟังก์ชันได้ ไม่ต้องแยกเพิ่มอีกตัว ประมาณว่างั้นแหละ 
+void game::place_ui(string curr) {
     if (curr == "Bank") {
          
     } else if (curr == "University") {
@@ -169,10 +203,10 @@ void game::place_gui(string curr) {
         if (choice == "Return") return;
 
         vector<string> job_name;
-        for(auto &itr : gen_tempObj<place>().get_jobs())
-            job_name.push_back(itr.get_name());
+        for(auto &itr : name2placePtr(curr)->get_allJob())
+            job_name.push_back(itr.name);
         string jb_choice = selection_menu<string>(job_name, {" ", "Return", " "});
-        int salary = gen_tempObj<job_office>().req_route(*(player_q.front()), choice, jb_choice);
+        int salary = gen_tempObj<job_office>().check_requirement(player_q.front(), jb_choice, name2placePtr(choice));
         if(salary != -1) {
             player_q.front()->get_and_change_metier(jb_choice);
             player_q.front()->get_and_change_work_place(choice);
@@ -181,18 +215,21 @@ void game::place_gui(string curr) {
             // didnt meet requirement
         }
     } else if (curr == "Lousy Housing" || curr == "Fancy Housing") {
-        if(player_q->get_and_change_home() == curr) {
-            // relax btn //อันนี้ไม่ต้องใช้ lambda ก็ได้นะ มันทำงานแค่จุดเดียวอ่ะ
-            // okkk
+        if(player_q.front()->get_and_change_home() == curr) {
             if(player_q.front()->get_and_change_energy()>0){
                 vector<int> stat = (curr == "Lousy Housing") ? (gen_tempObj<home>().get_relax_stat()) : (gen_tempObj<apartment>().get_relax_stat());
-                player_q.front()->get_and_change_energy(); //เท่าไหร่ดีน้า ใช้จาก stat ได้ลเย
-                player_q.front()->get_and_change_happiness(); //เท่าไหร่ดีน้า
+                vector<string> furniture = {/*furituer name list*/};
+                int n_item = 0;
+                for(int i = 0; i < furniture.size(); i++) {
+                    if ((player_q.front()->get_bag())[furniture[i]]) n_item++;
+                }
+                player_q.front()->get_and_change_energy(-stat[0]);
+                player_q.front()->get_and_change_happiness(stat[1] + n_item*2); // 2 happiness/item 
             }
         } else {
+            // rent btn
             if (curr == "Lousy Housing") {/* do somthing*/}
             else {/* do somthing*/}
-            // rent btn
         }
     } else {
         vector<sell_object> product = gen_tempObj<place>().get_sellObj(curr); // ตรงนี้ทำไว้แล้วสำหรับรับค่า product ช่าย
@@ -201,9 +238,6 @@ void game::place_gui(string curr) {
             product_name[i] = product[i].get_name();
             // cout << product_name[i] <<endl;
         }
-        /*
-            รับ product แล้ว เหลือทำหน้าร้านค้า 
-        */
         string choice = selection_menu<string>(product_name, {
             " ",
             "Return",
@@ -212,5 +246,10 @@ void game::place_gui(string curr) {
         if(choice == "Return") return;
         else if(choice == "Work") { player_q.front()->do_work(); }
     }
-    
+}
+
+place* game::name2placePtr(string plName) {
+    for(auto &itr: plList) {
+        if (itr->get_name() == plName) return itr;
+    }
 }

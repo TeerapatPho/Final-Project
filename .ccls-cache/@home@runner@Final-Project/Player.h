@@ -15,6 +15,7 @@ private:
     string work_place; //สถานที่ทำงาน
     string current_place;//สถานที่ปัจจุบัน
     string home; //ที่พัก
+    string car_type;
     int education; //การศึกษา
     int work_EXP; //ประสบการณ์ทำงาน
     int health; //สุขภาพ
@@ -25,7 +26,7 @@ private:
     int energy; //พลังงานจัย
     int salary; //เงินเดือน
     int account_balance;//เงินในบัญชี
-    //map<string,int> bag; //ตรงกระเป๋าทำเป็น dict มั้ยแล้วเก็บเป็นชื่อคู่กับ bool(0,1) เช็คว่ามีหรือไม่มี  
+    map<string,bool> bag; //ตรงกระเป๋าทำเป็น dict มั้ยแล้วเก็บเป็นชื่อคู่กับ bool(0,1) เช็คว่ามีหรือไม่มี  
 public:
     player(string=""); //รับชื่อผู้เล่น
     // ~player();
@@ -34,6 +35,7 @@ public:
     string get_and_change_work_place(string="");
     string get_and_change_current_place(string="");
     string get_and_change_home(string="");
+    string get_and_change_car_type(string="");
     int get_and_change_education(int=0);  
     int get_and_change_workEXP(int=0);
     int get_and_change_debt(int=0);
@@ -44,7 +46,8 @@ public:
     int get_and_change_energy(int=0);
     int get_and_change_salary(int=0);
     int get_and_change_account_balance(int=0);
-    bool phone_buying(int); // สำหรับ player ที่มีโทรศัพท์มือถือ ส่งราคาสินค้า(แบบไม่ติดลบ) รีเทิร์น true->success , false->not success
+    map<string, bool> get_bag();
+    void phone_buying(int); // สำหรับ player ที่มีโทรศัพท์มือถือ ส่งราคาสินค้า(แบบไม่ติดลบ) 
     //int bag_check(string);
     void display();
     void get_card(card);
@@ -58,6 +61,7 @@ player::player(string name_input){
   metier = "None"; 
   work_place = "None";
   current_place = "None";
+  car_type = "Walk";
   education = 0; // max = 700;
   work_EXP =  0; // max = {0, 100, 200, 400, 800, 1600, 3200, 6400}; -> 10 energy/ 1 tap/ 12 exp
   health = 200; // max = 2000
@@ -86,6 +90,10 @@ string player::get_and_change_current_place(string current_place_input){
 string player::get_and_change_home(string home_input) {
     if(home_input != "") home = home_input;
     return home;
+}
+string player::get_and_change_car_type(string car_input) {
+    if(car_input != "") car_type = car_input;
+    return car_type;
 }
 int player::get_and_change_education(int education_input){
   education += education_input;
@@ -135,6 +143,9 @@ int player::get_and_change_account_balance(int account_balance_input){
   account_balance += account_balance_input;
   return account_balance;
 }
+map<string, bool> player::get_bag() {
+    return bag;
+}
 
 void player::display(){
   cout<<"Name : "<<name<<endl;
@@ -172,34 +183,44 @@ void player::calculation_card_by_stat(){
 /*int player::bag_check(string check_obj){
     return bag.find(check_obj);
 }*/
-bool player::phone_buying(int cost){ //may be use try and catch 
-  if(cost > money + account_balance) return false; //ไม่ return เป็น bool หรอ? เห็นมีแค่ 0/1
-  if(money>=cost){
-    money -= cost;
-    return true;
-  }
-  money = 0;
-  account_balance -= cost-money;
-  return true;
+void player::phone_buying(int cost){ 
+    //ถ้าเป็น try จะ return bool กลับมาไม่ได้นะ ถ้าจะเอาผลการชำระเงินไปใช้ต่อต้องกลับไปใช้แบบเดิม
+   try{
+      if(account_balance + money < cost) throw cost - money - account_balance;
+      if(money > cost) money -= cost;
+      else{
+        money = 0;
+        account_balance -= cost-money;
+      }
+      cout << "Payment successful :)" << endl;
+    }
+   catch (int money_need){
+      cout << "You need " << money_need << " dollar more!"<<endl;
+   }
 }
-void player::add_item(string item_name){ // ไม่ใช้ boolean หรอ //ที่เก็บเป็น 0,1 เพราะเผื่อเวลาคำนวณคะแนน จะได้เอาคะแนนทุกอย่างในกระเป๋าแล้วคูณด้วย 0,1 จะได้ไม่ต้องทำ if เช็คอีกที
-  bag.at(item_name) = 1; //https://stackoverflow.com/questions/4527686/how-to-update-stdmap-after-using-the-find-method
+void player::add_item(string item_name){ 
+  bag.at(item_name) = true; //https://stackoverflow.com/questions/4527686/how-to-update-stdmap-after-using-the-find-method
 }
 
 void player::do_work() {
     // (20 energy/ 1 tap/ 12 exp)
-    if(get_and_change_energy()>0){
-        //กันกรณี < 0 ไว้แล้วใน func
-        if(get_and_change_energy()>=20){
-            get_and_change_energy(-20);
-            get_and_change_money(get_and_change_salary()*8);
-            get_and_change_workEXP(12);
-        }
-        else { 
-            get_and_change_money(static_cast<int>(floor(static_cast<float>(get_and_change_salary())*get_and_change_energy()/20)));//ไม่ใช่ static_cast<int> หรอออ
-            get_and_change_workEXP(static_cast<int>(12 * get_and_change_energy()/20)); //cast เป็น float ให้มันคำนวณแบบ float ก่อน แล้วต่อย cast เป็น int เพื่อให้มันอยู่ในรูป int //อ่อออ เกททท
-            get_and_change_energy(-get_and_change_energy());
-        } 
-    }
-    else cout << "You have not enough energy!"<< endl;
+  try{
+    if(energy<=0) throw;
+    if(energy>=20){
+        energy -= 20;
+        money += salary*8;
+        work_EXP += 12;
+     }
+     else { 
+        money += static_cast<int>(floor(salary*8*static_cast<float>(energy/20)));
+        work_EXP += static_cast<int>(floor(12*static_cast<float>(energy/20)));
+        if (bag["Notebook"]) money += 4; 
+        energy = 0;
+     } 
+     cout << "Work work work!" << endl;
+  }
+  catch (...){
+    cout << "You not have energy! go home and recharge your energy."<< endl;
+  }
+   
 }

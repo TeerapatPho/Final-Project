@@ -1,7 +1,6 @@
 // #define sizeBoard 18 
 class board {
     int distance;
-    vector<string> plName = {"Cluckers", "Gym", "Lousy Housing", "Market", "Fancy Housing", "Bank", "VexCorp", "Job Office", "Culture Center", "University", "Appliance Store", "Mall"};
     vector<pair<int, int>> graph[12];
 public:
     board();
@@ -36,7 +35,6 @@ board::board() {
     addEdge(9, 10, 1);
     addEdge(10, 11, 1);
     addEdge(11, 0, 1);
-
     //หรือ addEdge(7, 0, 5); // คือ Job Office-Cluckers ระยะทาง 5
 }
 
@@ -78,13 +76,16 @@ int** board::graph2matrix(vector<pair<int, int>> graph[]) { //เปลี่ย
     */
     return arr;
 }
-int board::get_plIndex(string name) { //อันนี้คือหาว่าตอนนี้ player อยู่ไหนใช่มะ อ่อออ เราก็จะได้ index ที่ player อยู่กลับมา
+int board::get_plIndex(string name) {
     /*
     for(int i = 0; i < plName.size(); i++)
         if (plName[i].compare(name) == 0) return i;
     return -1;
     */
-    return checkIndex_vector<string>(name, plName);
+    vector<string> v;
+    for(auto &itr: plList)
+        v.push_back(itr->get_name());
+    return checkIndex_vector<string>(name, v);
 }
 int board::cal_distance(int **G, string start, string stop) { // ส่วนอันนี้ใช้ Dijsktra's algorithm ในการคำนวณหาระยะทาง
     // Dijsktra's algorithm

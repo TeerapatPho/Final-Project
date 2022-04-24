@@ -38,15 +38,15 @@ card::card(string name, string desc, int hea, int hap, int en, int mon) {
 
 class c_card : public card{ // crime card
 private :
-    int period;
+    // int start;
+    // int period;
 public :
-    c_card(string="",string="",int=0,int=0);
+    c_card(string n,string d,int hp,int sm) : card(n,d,0,hp,0,sm) {
+        
+    }
     // ~c_card(); // ถ้ายังไม่ได้สร้างตัว method จริงของมัน หรือคิดไม่ออกก็คอมเม้นปิดเอาไว้นะฮะ มัน compile มิได้ ;-;
-    void att_curr_player();
+    // void att_curr_player();
+    // void del_period() {
+    //     period--;
+    // }
 };
-
-c_card::c_card(string n,string d,int hp,int sm) : card(n,d,0,hp,0,sm) {
-    srand(time(0));
-    int pr = (rand() % 3) + 1;
-    this->period = pr;
-}
