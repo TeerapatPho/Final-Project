@@ -1,14 +1,16 @@
-class sell_object {
+class sell_object
+{
 private:
     string name;
-    int cost; //set to positive integer only
+    int cost; // set to positive integer only
     int health;
-    int happiness; 
+    int happiness;
     int education;
     bool eatable;
-    int energy; //set to positive integer only
+    int energy; // set to positive integer only
 public:
-    sell_object(string name, int cost, int health, int happiness, int education, bool eatable, int energy) {
+    sell_object(string name, int cost, int health, int happiness, int education, bool eatable, int energy)
+    {
         this->name = name;
         this->cost = (cost >= 0) ? cost : -cost;
         this->health = health;
@@ -19,7 +21,8 @@ public:
     }
     string get_name() { return name; }
     int get_cost() { return cost; }
-    vector<int> get_return() {
+    vector<int> get_return()
+    {
         vector<int> v = {health, happiness, education};
         return v;
     }
@@ -27,16 +30,19 @@ public:
     int get_energyAmount() { return energy; }
 };
 
-struct JOB {
+struct JOB
+{
     string name;
     int salary;
-    struct requirement {
+    struct requirement
+    {
         int workEXP;
         int education;
     } req;
 };
 
-class place {
+class place
+{
 private:
     string name;
     string desc;
@@ -46,34 +52,38 @@ private:
     // vector<sell_object> get_product_template();
 
 public:
-    place(string name="none", string desc="none") { 
+    place(string name = "none", string desc = "none")
+    {
         this->name = name;
         this->desc = desc;
     }
     string get_name() { return name; }
     string get_desc() { return desc; }
 
-    vector<sell_object> get_sellObj(string);
-    vector<struct JOB> get_jobs(string);
-
-    virtual vector<struct JOB> get_allJob() {
+    virtual vector<struct JOB> get_allJob()
+    {
         vector<struct JOB> v = {};
         return v;
     }
-    virtual vector<sell_object> get_product() {
+    virtual vector<sell_object> get_product()
+    {
         vector<sell_object> v = {};
         return v;
     }
+    virtual void ui(player *, string);
 
     virtual void foo() {}
 };
 
-class restaurant : public place {
+class restaurant : public place
+{
 private:
     vector<sell_object> product;
-    vector<struct JOB> job; 
+    vector<struct JOB> job;
+
 public:
-    restaurant() : place("Cluckers", "The best fast food in town, soooo gooood!") {
+    restaurant() : place("Cluckers", "The best fast food in town, soooo gooood!")
+    {
         product.insert(product.end(), sell_object("Clucker Burger", 95, -10, 10, 0, true, 1)); //ฟามจิงใช้ push_back ก็ได้แหละ ใช้ insert ทำไมวะ???? ดึงๆ
         product.insert(product.end(), sell_object("Clucker Bucket", 120, -10, 20, 0, true, 1));
         product.insert(product.end(), sell_object("Fries", 75, -10, -10, 0, true, 1));
@@ -86,28 +96,31 @@ public:
         job.push_back({"Clerk", 5, {100, 0}});
         job.push_back({"Assistant Manager", 6, {200, 100}});
         job.push_back({"Manager", 7, {200, 200}});
-
-
     }
-    vector<struct JOB> get_allJob() {
+    vector<struct JOB> get_allJob()
+    {
         return job;
     }
-    vector<sell_object> get_product() {
+    vector<sell_object> get_product()
+    {
         return product;
     }
 };
 
-class gym : public place {
+class gym : public place
+{
 private:
     vector<sell_object> product;
-    vector<struct JOB> job; 
+    vector<struct JOB> job;
+
 public:
-    gym() : place("Gym", "Get in shape and get healthy by coming here! NPNG!") {
+    gym() : place("Gym", "Get in shape and get healthy by coming here! NPNG!")
+    {
         product.insert(product.end(), sell_object("Work Out", 25, 10, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Something2", 100, 20, 20, 0, false, 1));
         product.insert(product.end(), sell_object("Yoga", 250, 50, 20, 0, false, 1));
         product.insert(product.end(), sell_object("Protein Shake", 90, 20, 0, 0, false, 1));
-    
+
         vector<int> req;
         job.push_back({"Janitor", 4, {0, 0}});
         job.push_back({"Exercise Physiologist", 5, {100, 100}});
@@ -115,44 +128,52 @@ public:
         job.push_back({"Assistant Manager", 9, {400, 200}});
         job.push_back({"Manager", 11, {800, 300}});
     }
-    vector<struct JOB> get_allJob() {
+    vector<struct JOB> get_allJob()
+    {
         return job;
     }
-    vector<sell_object> get_product() {
+    vector<sell_object> get_product()
+    {
         return product;
     }
 };
 
-class home : public place {
+class home : public place
+{
 private:
-    int cost; //set to positive integer only
+    int cost; // set to positive integer only
 public:
-    home(int value=200) : place("Lousy Housing", "Your first apartment! Come here to relax.") {
+    home(int value = 200) : place("Lousy Housing", "Your first apartment! Come here to relax.")
+    {
         this->cost = (value >= 0) ? value : -value;
     }
-    vector<int> get_relax_stat() { //furby boi
+    vector<int> get_relax_stat()
+    { // furby boi
         int energy_loose = 1;
         int return_hapiness = 1;
         vector<int> v = {energy_loose, return_hapiness};
         return v;
     }
     int get_cost() { return cost; }
-    void ui(player*);
+    void ui(player *);
 };
 
-class market : public place {
+class market : public place
+{
 private:
     vector<sell_object> product;
-    vector<struct JOB> job; 
+    vector<struct JOB> job;
+
 public:
-    market() : place("Market", "Lottery tickets and food for your fridge (if you have one!).") {
+    market() : place("Market", "Lottery tickets and food for your fridge (if you have one!).")
+    {
         product.insert(product.end(), sell_object("Food for 1 week", 64, 0, 0, 0, true, 1));
         product.insert(product.end(), sell_object("Food for 2 weeks", 120, 0, 0, 0, true, 1));
         product.insert(product.end(), sell_object("Food for 4 weeks", 227, 0, 0, 0, true, 1));
         product.insert(product.end(), sell_object("Cleansing food for 1 week", 120, 20, 0, 0, true, 1));
         product.insert(product.end(), sell_object("Lottery", 35, 0, 0, 0, false, 1));
         product.insert(product.end(), sell_object("Newspaper", 5, 0, 0, 0, false, 1));
-    
+
         vector<int> req;
         job.push_back({"Janitor", 4, {0, 0}});
         job.push_back({"Checker", 6, {100, 0}});
@@ -160,37 +181,46 @@ public:
         job.push_back({"Assistant Manager", 9, {400, 200}});
         job.push_back({"Manager", 14, {800, 300}});
     }
-    vector<struct JOB> get_allJob() {
+    vector<struct JOB> get_allJob()
+    {
         return job;
     }
-    vector<sell_object> get_product() {
+    vector<sell_object> get_product()
+    {
         return product;
     }
 };
 
-class apartment : public place {
+class apartment : public place
+{
 private:
     int cost;
+
 public:
-    apartment(int cost=400) : place("Fancy Housing", "Much nicer apartment. Super secure, blocks all burglars!") {
+    apartment(int cost = 400) : place("Fancy Housing", "Much nicer apartment. Super secure, blocks all burglars!")
+    {
         this->cost = (cost >= 0) ? cost : -cost;
     }
-    vector<int> get_relax_stat() {
+    vector<int> get_relax_stat()
+    {
         int energy_loose = 1;
         int return_hapiness = 5;
         vector<int> v = {energy_loose, return_hapiness};
         return v;
     }
     int get_cost() { return cost; }
-    void ui(player*);
+    void ui(player *);
 };
 
-class bank : public place {
+class bank : public place
+{
 private:
     float interest;
-    vector<struct JOB> job; 
+    vector<struct JOB> job;
+
 public:
-    bank(float interest=3) : place("Bank", "Here you van pay the rent, deposit and withdraw money, get loan or meet the investment Broker if you're feeling lucky.") {
+    bank(float interest = 3) : place("Bank", "Here you van pay the rent, deposit and withdraw money, get loan or meet the investment Broker if you're feeling lucky.")
+    {
         this->interest = interest;
 
         vector<int> req;
@@ -201,21 +231,26 @@ public:
         job.push_back({"Broker", 15, {1600, 400}});
         job.push_back({"Compliance Officer", 17, {3200, 500}});
     }
-    int cal_interest(int value) {
-        return static_cast<int>(value + value * (interest/100));
+    int cal_interest(int value)
+    {
+        return static_cast<int>(value + value * (interest / 100));
     }
-    vector<struct JOB> get_allJob() {
+    vector<struct JOB> get_allJob()
+    {
         return job;
     }
-    void ui(player*);
+    void ui(player *);
 };
 
-class tech_coop : public place {
+class tech_coop : public place
+{
 private:
     vector<sell_object> product;
-    vector<struct JOB> job; 
+    vector<struct JOB> job;
+
 public:
-    tech_coop() : place("VexCorp", "The salary is really good.") {
+    tech_coop() : place("VexCorp", "The salary is really good.")
+    {
         product.insert(product.end(), sell_object("Vexportation Pass", 199, 0, 0, 0, false, 1));
         product.insert(product.end(), sell_object("Electric Scooter", 499, 0, 0, 0, false, 1));
         product.insert(product.end(), sell_object("Nikola Electric", 999, 0, 0, 0, false, 1));
@@ -229,47 +264,57 @@ public:
         job.push_back({"CTO", 19, {500, 400}});
         job.push_back({"CEO", 23, {700, 700}});
     }
-    vector<struct JOB> get_allJob() {
+    vector<struct JOB> get_allJob()
+    {
         return job;
     }
-    vector<sell_object> get_product() {
+    vector<sell_object> get_product()
+    {
         return product;
     }
 };
 
-class job_office : public place {
+class job_office : public place
+{
 public:
     job_office() : place("Job Office", "Apply for jobs here!") {}
-    int check_requirement(player*, string, place*);
-    void ui(player*);
+    int check_requirement(player *, string, place *);
+    void ui(player *);
 };
 
-class art : public place {
+class art : public place
+{
 private:
     vector<sell_object> product;
+
 public:
-    art() : place("Culture Center", "Buy tickets to events or trips.") {
+    art() : place("Culture Center", "Buy tickets to events or trips.")
+    {
         product.insert(product.end(), sell_object("Football match", 250, 0, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Baseball game", 250, 0, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Mini concert", 300, 0, 10, 0, false, 1));
-        product.insert(product.end(), sell_object("Opera Someting",450 , 0, 10, 0, false, 1));
+        product.insert(product.end(), sell_object("Opera Someting", 450, 0, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Rocket to the Moon", 800, 0, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Picnic", 250, 10, 10, 0, false, 1));
     }
-    vector<sell_object> get_product() {
+    vector<sell_object> get_product()
+    {
         return product;
     }
 };
 
-class school : public place {
+class school : public place
+{
 private:
     vector<sell_object> product;
     vector<struct JOB> job;
+
 public:
-    school() : place("๊University", "Come here to get educated and get a better jobs") {
+    school() : place("University", "Come here to get educated and get a better jobs")
+    {
         product.insert(product.end(), sell_object("Educate", 50, 0, 10, 10, false, 1));
         /*
-            5 
+            5
         */
 
         vector<int> req;
@@ -279,27 +324,30 @@ public:
         job.push_back({"Adjunct", 9, {400, 200}});
         job.push_back({"Assistant Professor", 11, {800, 300}});
         job.push_back({"Professor", 14, {1600, 500}});
-
     }
-    vector<struct JOB> get_allJob() {
+    vector<struct JOB> get_allJob()
+    {
         return job;
     }
-    void ui(player*);
+    void ui(player *);
 };
 
-class it_store : public place {
+class it_store : public place
+{
 private:
     vector<sell_object> product;
     vector<struct JOB> job;
+
 public:
-    it_store() : place("Appliance Store", "Fancy Fridge or a new TV? Get it here!") {
-        product.insert(product.end(), sell_object("Refrigerator", 850, 0, 10, 0, false, 1)); // อาหารบูด
-        product.insert(product.end(), sell_object("Smoke Detector", 400, 0, 10, 0, false, 1)); // ลดโอกาสไฟไหม้
-        product.insert(product.end(), sell_object("Fire extinguisher", 150, 0, 10, 0, false, 1));  // ลดเงินที่จะลด -,- -> +
-        product.insert(product.end(), sell_object("elgooG Maps", 250, 100, -10, 0, false, 1)); // กันรถติด
-        product.insert(product.end(), sell_object("CCTV", 400, 100, -10, 0, false, 1)); // ลดโอกาสไวท์ขโมย +10% (บวกเข้าไปเลย)
-        product.insert(product.end(), sell_object("Notebook", 350, 100, -10, 0, false, 1)); // + ตังจากการทำงาน 4
-        product.insert(product.end(), sell_object("Stun Gun", 499, 100, -10, 0, false, 1)); // ป้องกันโจรใหญ้ +10%
+    it_store() : place("Appliance Store", "Fancy Fridge or a new TV? Get it here!")
+    {
+        product.insert(product.end(), sell_object("Refrigerator", 850, 0, 10, 0, false, 1));      // อาหารบูด
+        product.insert(product.end(), sell_object("Smoke Detector", 400, 0, 10, 0, false, 1));    // ลดโอกาสไฟไหม้
+        product.insert(product.end(), sell_object("Fire extinguisher", 150, 0, 10, 0, false, 1)); // ลดเงินที่จะลด -,- -> +
+        product.insert(product.end(), sell_object("elgooG Maps", 250, 100, -10, 0, false, 1));    // กันรถติด
+        product.insert(product.end(), sell_object("CCTV", 400, 100, -10, 0, false, 1));           // ลดโอกาสไวท์ขโมย +10% (บวกเข้าไปเลย)
+        product.insert(product.end(), sell_object("Notebook", 350, 100, -10, 0, false, 1));       // + ตังจากการทำงาน 4
+        product.insert(product.end(), sell_object("Stun Gun", 499, 100, -10, 0, false, 1));       // ป้องกันโจรใหญ้ +10%
 
         vector<int> req;
         job.push_back({"Clerk", 4, {0, 0}});
@@ -308,28 +356,32 @@ public:
         job.push_back({"Software Servitor", 9, {400, 200}});
         job.push_back({"Manager", 11, {800, 300}});
         job.push_back({"Senior Manager", 13, {1600, 400}});
-
     }
-    vector<struct JOB> get_allJob() {
+    vector<struct JOB> get_allJob()
+    {
         return job;
     }
-    vector<sell_object> get_product() {
+    vector<sell_object> get_product()
+    {
         return product;
     }
 };
 
-class mall : public place {
+class mall : public place
+{
 private:
     vector<sell_object> product;
     vector<struct JOB> job;
+
 public:
-    mall() : place("Mall", "Buy new clothes or furniture for you home. Happiest place on earth.") {
+    mall() : place("Mall", "Buy new clothes or furniture for you home. Happiest place on earth.")
+    {
         product.insert(product.end(), sell_object("Salty Bag", 199, 0, 0, 0, false, 1));
         product.insert(product.end(), sell_object("Sofa, So good!", 800, 0, 0, 0, false, 1));
         product.insert(product.end(), sell_object("Curtain", 400, 0, 0, 0, false, 1));
         product.insert(product.end(), sell_object("Carpet", 400, 0, 0, 0, false, 1));
         product.insert(product.end(), sell_object("Movie Poster", 150, 0, 0, 0, false, 1));
-        product.insert(product.end(), sell_object("Lemon Tree", 100, 0, -10, 0, false, 1)); 
+        product.insert(product.end(), sell_object("Lemon Tree", 100, 0, -10, 0, false, 1));
         // i wonder how, i wonder why. yesterday you told me bout the blue blue sky. At all that I can see it's just another lemon tree~ -> ร้องเพลงแหละะ
 
         vector<int> req;
@@ -339,54 +391,252 @@ public:
         job.push_back({"Store Manager", 6, {400, 200}});
         job.push_back({"Assistant Manager", 6, {800, 300}});
         job.push_back({"Manager", 6, {800, 400}});
-
     }
-    vector<struct JOB> get_allJob() {
+    vector<struct JOB> get_allJob()
+    {
         return job;
     }
-    vector<sell_object> get_product() {
+    vector<sell_object> get_product()
+    {
         return product;
     }
 };
 
-int job_office::check_requirement(player* p, string job_name, place* pl) {
+int job_office::check_requirement(player *p, string job_name, place *pl)
+{
     vector<struct JOB> temp = pl->get_allJob();
-    for(auto &itr : temp) 
-        if(itr.name == job_name) 
-            if(itr.req.workEXP <= p->get_and_change_workEXP() && itr.req.education <= p->get_and_change_education())
+    for (auto &itr : temp)
+        if (itr.name == job_name)
+            if (itr.req.workEXP <= p->get_and_change_workEXP() && itr.req.education <= p->get_and_change_education())
                 return itr.salary;
     return -1;
 }
 
-vector<sell_object> place::get_sellObj(string curr) {
-    vector<string> plName = {"Cluckers", "Gym", "Market", "VexCorp", "Culture Center", "Appliance Store", "Mall"};
-    int index = checkIndex_vector<string>(curr,plName);
+void place::ui(player *p, string curr)
+{
+    do {
+        vector<sell_object> product = name2placePtr(curr)->get_product(); // ตรงนี้ทำไว้แล้วสำหรับรับค่า product ช่าย
+        vector<string> product_name;
+        for (auto &itr: product)
+            product_name.push_back(itr.get_name());
+    
+        string choice = selection_menu<string>(product_name, {
+            " ",
+            "Return",
+            (curr != p->get_and_change_work_place()) ? (" ") : ("Work")
+        });
+        if (choice == "Return")
+            return;
+        else if (choice == "Work")
+            p->do_work();
+        else {
+            for(auto &itr : product)
+                if(itr.get_name() == choice) {
+                    if(!p->buying(itr.get_cost())) break;
+                    vector<int> x = itr.get_return();
+                    p->get_and_change_health(x[0]);
+                    p->get_and_change_happiness(x[1]);
+                    p->get_and_change_education(x[2]);
+                    if(itr.get_eatable()) p->get_and_change_fullness(true);
+                    p->get_and_change_energy(-itr.get_energyAmount());
 
-    vector<sell_object> product = {};
-    if(index == 0) product = gen_tempObj<restaurant>().get_product();
-    else if(index == 1) product = gen_tempObj<gym>().get_product();
-    else if(index == 2) product = gen_tempObj<market>().get_product();
-    else if(index == 3) product = gen_tempObj<tech_coop>().get_product();
-    else if(index == 4) product = gen_tempObj<art>().get_product();
-    else if(index == 5) product = gen_tempObj<it_store>().get_product();
-    else if(index == 6) product = gen_tempObj<mall>().get_product();
-
-    return product;
+                    break;
+                }
+        }
+    } while(true);
+    
 }
 
-vector<struct JOB> place::get_jobs(string curr) {
-    vector<string> plName = {"Cluckers", "Gym", "Market", "Bank", "VexCorp", "University", "Appliance Store", "Mall"};
-    int index = checkIndex_vector<string>(curr,plName);
+void home::ui(player* p) {
+    do {
+        if (p->get_and_change_home() == get_name())
+        {
+            string choice = selection_menu<string>({}, {
+                "Relax",
+                "Return",
+                " "
+            });
+            if (choice == "Return") return;
+            if (p->get_and_change_energy() > 0)
+            {
+                vector<int> stat = get_relax_stat();
+                vector<string> furniture = {"Sofa, So good!", "Curtain", "Carpet", "Movie Poster", "Lemon Tree"};
+                int n_item = 0;
+                map<string, bool> bag = p->get_bag();
+                for (auto &itr : furniture)
+                {
+                    if (bag[itr])
+                        n_item++;
+                }
+                p->get_and_change_energy(-stat[0]);
+                p->get_and_change_happiness(stat[1] + n_item * 2); // 2 happiness/item
+            }
+        }
+        else
+        {
+            // rent btn
+            cout << "Rent Cost: " << cost << endl;
+            string choice = selection_menu<string>({}, {
+                "Rent",
+                "Return",
+                " "
+            });
+            if (choice == "Return") return;
+            else if(choice == "Rent") {
+                if(!p->buying(cost)) continue;
+                p->get_and_change_home(get_name());
+            }
+        }
+    } while (true);
+    
+}
 
-    vector<struct JOB> jobs = {};
-    if(index == 0) jobs = gen_tempObj<restaurant>().get_allJob();
-    else if(index == 1) jobs = gen_tempObj<gym>().get_allJob();
-    else if(index == 2) jobs = gen_tempObj<market>().get_allJob();
-    else if(index == 3) jobs = gen_tempObj<bank>().get_allJob();
-    else if(index == 4) jobs = gen_tempObj<tech_coop>().get_allJob();
-    else if(index == 5) jobs = gen_tempObj<school>().get_allJob();
-    else if(index == 6) jobs = gen_tempObj<it_store>().get_allJob();
-    else if(index == 7) jobs = gen_tempObj<mall>().get_allJob();
+void apartment::ui(player* p) {
+    do {
+        if (p->get_and_change_home() == get_name())
+        {
+            string choice = selection_menu<string>({}, {
+                "Relax",
+                "Return",
+                " "
+            });
+            if (choice == "Return") return;
+            if (p->get_and_change_energy() > 0)
+            {
+                vector<int> stat = get_relax_stat();
+                vector<string> furniture = {"Sofa, So good!", "Curtain", "Carpet", "Movie Poster", "Lemon Tree"};
+                int n_item = 0;
+                map<string, bool> bag = p->get_bag();
+                for (auto &itr : furniture)
+                {
+                    if (bag[itr])
+                        n_item++;
+                }
+                p->get_and_change_energy(-stat[0]);
+                p->get_and_change_happiness(stat[1] + n_item * 2); // 2 happiness/item
+            }
+        }
+        else
+        {
+            // rent btn
+            cout << "Rent Cost: " << cost << endl;
+            string choice = selection_menu<string>({}, {
+                "Rent",
+                "Return",
+                " "
+            });
+            if (choice == "Return") return;
+            else if(choice == "Rent") {
+                if(!p->buying(cost)) continue;
+                p->get_and_change_home(get_name());
+            }
+        }
+    } while (true);
+}
 
-    return jobs;
+void bank::ui(player* p) {
+    // work, deposit-withdraw
+    do {
+        int mon = p->get_and_change_money();
+        int acc_mon = p->get_and_change_account_balance();
+        
+        vector<string> action = {"Deposit", "-100", "-All",
+                                "Withdraw", "+100", "+All"};
+        cout << "Money: " << p->get_and_change_money() << endl;
+        cout << "Account Balance: " << p->get_and_change_account_balance() << endl;
+        cout << "Debt Left: " << p->get_and_change_debt() << endl;
+        
+        string choice = selection_menu<string>(action, {
+            (p->get_and_change_debt() != 0) ? ("Paid Debt") : (" "), 
+            "Return", 
+            (get_name() != p->get_and_change_work_place()) ? (" ") : ("Work")
+        });
+        if(choice == "Return") 
+            return;
+        else if (choice == "Work")
+            p->do_work();
+        else if (choice == "Deposit" || choice == "-100") {
+            p->get_and_change_account_balance((mon >= 100) ? (100) : (mon));
+            p->get_and_change_money((mon >= 100) ? (-100) : (-mon));
+        }
+        else if (choice == "-All") {
+            p->get_and_change_account_balance(mon);
+            p->get_and_change_money(-mon);
+        }
+        else if (choice == "Withdraw" || choice == "+100"){
+            p->get_and_change_money((acc_mon >= 100) ? (100) : (acc_mon));
+            p->get_and_change_account_balance((acc_mon >= 100) ? (-100) : (-acc_mon));
+        }
+        else if (choice == "+All") {
+            p->get_and_change_money(acc_mon);
+            p->get_and_change_account_balance(-acc_mon);
+        }
+        else if (choice == "Paid Debt") {
+            p->buying(p->get_and_change_debt());
+        }
+        
+    } while (true);
+}
+
+void job_office::ui(player *p) {
+    do {
+        vector<string> plName = {"Cluckers", "Gym", "Market", "Bank", "VexCorp", "University", "Appliance Store", "Mall"};
+        string choice = selection_menu<string>(plName, {" ", "Return", " "});
+        if (choice == "Return")
+            return;
+    
+        vector<string> job_name;
+        for (auto &itr : get_allJob())
+            job_name.push_back(itr.name);
+        string jb_choice = selection_menu<string>(job_name, {" ", "Return", " "});
+        int salary = check_requirement(p, jb_choice, name2placePtr(choice));
+        if (salary != -1) // try catch?
+        {
+            p->get_and_change_metier(jb_choice);
+            p->get_and_change_work_place(choice);
+            p->get_and_change_salary(salary);
+        }
+        else
+        {
+            // didnt meet requirement
+        }
+    } while (true);
+    
+}
+
+void school::ui(player* p) {
+    // work and learn
+    do {
+        string choice = selection_menu<string>({}, {
+            (p->get_and_change_education()%100 == 0 && p->get_and_change_education() < 700) ? ("Paid Tuition Fee") : ("Learn"),
+            "Return",
+            (get_name() != p->get_and_change_work_place()) ? (" ") : ("Work")
+        });
+        if (choice == "Return")
+            return;
+        else if (choice == "Work")
+            p->do_work();
+        else if (choice == "Paid Tuition Fee") {
+            int fee;
+            int edu = p->get_and_change_education();
+            if (edu == 100) {
+                fee = 50;
+            } else if (edu == 200) {
+                fee = 100;
+            } else if (edu == 300) {
+                fee = 150;
+            } else if (edu == 400) {
+                fee = 200;
+            } else if (edu == 500) {
+                fee = 250;
+            } else if (edu == 600) {
+                fee = 250;
+            }
+            p->buying(fee);
+        }
+        else if (choice == "Learn") {
+            p->get_and_change_education(20);
+            p->get_and_change_energy(-30);
+        }
+    } while (true);
 }

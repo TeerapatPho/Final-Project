@@ -3,33 +3,33 @@
     "Board.h": [
       {
         "id": "2cb98be9-1763-4822-97d6-8257777f721c",
-        "line": 2,
-        "version": 12066,
-        "index": 38
+        "line": 1,
+        "version": 2,
+        "index": 23
       }
     ],
     "Game.h": [
       {
-        "id": "c16a84ab-1280-4cb3-97c3-08d25c2d9847",
-        "line": 132,
-        "version": 19383,
-        "index": 6331
+        "id": "11759fe0-711c-41a5-943e-be6d90065f64",
+        "line": 1,
+        "version": 1080,
+        "index": 29
       }
     ],
     "Place.h": [
       {
         "id": "5a3d81dc-0cb8-4d2a-87c7-2b4f25fbffd3",
-        "line": 326,
-        "version": 17841,
-        "index": 11370
+        "line": 1,
+        "version": 5287,
+        "index": 0
       }
     ],
     "main.cpp": [
       {
         "id": "0b56a5c9-b6df-402d-9967-4ae8970599d2",
-        "line": 79,
-        "version": 5912,
-        "index": 1707
+        "line": 23,
+        "version": 62,
+        "index": 330
       }
     ]
   }
