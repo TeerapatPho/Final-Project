@@ -1,6 +1,15 @@
 #ifndef PLACE_H
 #define PLACE_H
 
+#include <string>
+#include <vector>
+
+using namespace std;
+
+
+
+#include "Player.h"
+
 class sell_object
 {
 private:
@@ -170,10 +179,10 @@ private:
 public:
     market() : place("Market", "Lottery tickets and food for your fridge (if you have one!).")
     {
-        product.insert(product.end(), sell_object("Food for 1 week", 64, 0, 0, 0, true, 1));
-        product.insert(product.end(), sell_object("Food for 2 weeks", 120, 0, 0, 0, true, 1));
-        product.insert(product.end(), sell_object("Food for 4 weeks", 227, 0, 0, 0, true, 1));
-        product.insert(product.end(), sell_object("Cleansing food for 1 week", 120, 20, 0, 0, true, 1));
+        product.insert(product.end(), sell_object("Food for 1 week", 64, 0, 0, 0, false, 1));
+        product.insert(product.end(), sell_object("Food for 2 weeks", 120, 0, 0, 0, false, 1));
+        product.insert(product.end(), sell_object("Food for 4 weeks", 227, 0, 0, 0, false, 1));
+        product.insert(product.end(), sell_object("Cleansing food for 1 week", 120, 20, 0, 0, false, 1));
         product.insert(product.end(), sell_object("Lottery", 35, 0, 0, 0, false, 1));
         product.insert(product.end(), sell_object("Newspaper", 5, 0, 0, 0, false, 1));
 
@@ -296,7 +305,7 @@ public:
         product.insert(product.end(), sell_object("Football match", 250, 0, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Baseball game", 250, 0, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Mini concert", 300, 0, 10, 0, false, 1));
-        product.insert(product.end(), sell_object("Opera Someting", 450, 0, 10, 0, false, 1));
+        product.insert(product.end(), sell_object("Opera House", 450, 0, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Rocket to the Moon", 800, 0, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Picnic", 250, 10, 10, 0, false, 1));
     }
@@ -309,17 +318,11 @@ public:
 class school : public place
 {
 private:
-    vector<sell_object> product;
     vector<struct JOB> job;
 
 public:
     school() : place("University", "Come here to get educated and get a better jobs")
     {
-        product.insert(product.end(), sell_object("Educate", 50, 0, 10, 10, false, 1));
-        /*
-            5
-        */
-
         vector<int> req;
         job.push_back({"Janitor", 4, {0, 0}});
         job.push_back({"Clerk", 6, {100, 100}});

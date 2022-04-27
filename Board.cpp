@@ -5,8 +5,11 @@
 
 using namespace std;
 
-#include "Board.h"
+// #ifndef BOARD_CPP
+// #define BOARD_CPP
+
 #include "Function.h"
+#include "Board.h"
 
 board::board(int map)
 {
@@ -200,3 +203,5 @@ void board::print_board(string present_place, int energy)
         cout << "=";
     cout << endl;
 }
+
+// #endif

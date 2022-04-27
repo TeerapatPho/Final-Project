@@ -5,6 +5,10 @@
 
 using namespace std;
 
+// #ifndef PLACE_CPP
+// #define PLACE_CPP
+
+#include "Function.h"
 #include "Place.h"
 #include "Player.h"
 
@@ -45,8 +49,9 @@ void place::ui(player *p, string curr)
                     bool check_item = false;
                     if(curr == "Appliance Store" || curr == "Mall") {
                         if(choice == "Salty Bag") {
-                            int salty = rand() % 250;
-                            salty *= (salty % 8 == 0) ? (-1) : (1);
+                            int salty = rand() % 450;
+                            salty *= (salty % 3 == 0) ? (-1) : (1);
+                            salty += (salty % 3 == 0) ? (199) : (0);
                             p->get_and_change_money(salty);
                             cout << "You " << ((salty >= 0) ? ("got ") : ("loose ")) << salty << " from Salty Bag" << endl;
                         }
@@ -72,14 +77,31 @@ void place::ui(player *p, string curr)
                         }
                         else if(bag["Refrigerator"] == false) { /* throw "Must bu Refrigerator first!!"; */ break; }
                     } 
-                    else if(curr == "Culture Center")
-                        
-                    if(check_item == false) {// ต้องใส่ p->buying(itr.get_cost()) ด้วยป่ะ
+                    else if(curr == "Culture Center") {
+                        if(bag["Football match"] || bag["Baseball game"] || bag["Mini concert"] || bag["Opera House"] || bag["Rocket to the Moon"] || bag["Picnic"]) {
+                            check_item = true;
+                        }
+                    }
+                    else if(curr == "VexCorp") {
+                        string curr_car = p->get_and_change_car_type();
+                        if(choice == "Vexportation Pass" && curr_car == "Walk") {
+                            p->get_and_change_car_type("Vexportation Pass");
+                        }
+                        else if(choice == "Electric Scooter" && (curr_car == "Walk" || curr_car == "Vexportation Pass")) {
+                            p->get_and_change_car_type("Electric Scooter");
+                        }
+                        else if(choice == "Nikola Electric" && curr_car != "Nikola Electric") {
+                            p->get_and_change_car_type("Nikola Electric");
+                        }
+                        else check_item = true;
+                    }
+                    
+                    if(check_item == false) {
                         vector<int> x = itr.get_return();
                         p->get_and_change_health(x[0]);
                         p->get_and_change_happiness(x[1]);
                         p->get_and_change_education(x[2]);
-                        if(itr.get_eatable()) p->get_and_change_fullness(true);
+                        if(itr.get_eatable()) p->change_fullness(true);
                         p->get_and_change_energy(-itr.get_energyAmount());
                     }
                     break;
@@ -91,9 +113,12 @@ void place::ui(player *p, string curr)
 }
 
 void home::ui(player* p) {
+    map<string, bool> bag = p->get_bag();
     do {
         if (p->get_and_change_home() == get_name())
         {
+            if(bag["Refrigerator"]) 
+                cout << "Food Reserve remain : " << p->get_and_change_food_reserve() << " week(s)" << endl;
             string choice = selection_menu<string>({}, {
                 "Relax",
                 "Return",
@@ -135,9 +160,12 @@ void home::ui(player* p) {
 }
 
 void apartment::ui(player* p) {
+    map<string, bool> bag = p->get_bag();
     do {
         if (p->get_and_change_home() == get_name())
         {
+            if(bag["Refrigerator"]) 
+                cout << "Food Reserve remain : " << p->get_and_change_food_reserve() << " week(s)" << endl;
             string choice = selection_menu<string>({}, {
                 "Relax",
                 "Return",
@@ -241,7 +269,7 @@ void job_office::ui(player *p) {
         }
         else
         {
-            // didnt meet requirement
+            continue;
         }
     } while (true);
     
@@ -283,3 +311,5 @@ void school::ui(player* p) {
         }
     } while (true);
 }
+
+// #endif

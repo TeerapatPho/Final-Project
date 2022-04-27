@@ -1,10 +1,12 @@
+#ifndef BOARD_H
+#define BOARD_H
+
 #include <vector>
 #include <string>
 
 using namespace std;
 
-#ifndef BOARD_H
-#define BOARD_H
+
 
 class board
 {

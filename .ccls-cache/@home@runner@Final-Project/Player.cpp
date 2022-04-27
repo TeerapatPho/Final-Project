@@ -1,14 +1,16 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <cmath>
 
 using namespace std;
 
-#ifndef asd
+// #ifndef PLAYER_CPP
+// #define PLAYER_CPP
 
 #include "Player.h"
 #include "Card.h"
-
+#include "Exception.h"
 player::player(string name_input)
 {
     name = name_input;
@@ -26,9 +28,13 @@ player::player(string name_input)
     energy = 200;
     salary = 0;
     account_balance = 0;
-    food_reserve = 0; //ไม่มีละ555555
-    vector<string> key = {"lottery","newspaper","refridge",}; //มีระบบสัตวเลี้ยงมั้ย รึทำเปนตุ๊กตานะ
-    for(auto &itr:key) bag[key] = false;
+    food_reserve = 0; 
+    vector<string> key = {"lottery",
+                          "Football match", "Baseball game", "Mini concert", "Opera House", "Rocket to the Moon", "Picnic",
+                          "Refrigerator", "Smoke Detector", "Fire extinguisher", "elgooG Maps", "CCTV", "Notebook", "Stun Gun",
+                          "Sofa, So good!", "Curtain", "Carpet", "Movie Poster", "Lemon Tree"
+    }; //มีระบบสัตวเลี้ยงมั้ย รึทำเปนตุ๊กตานะ
+    for(auto &itr:key) bag[itr] = false;
   
 }
 
@@ -104,12 +110,12 @@ int player::get_and_change_happiness(int happiness_input)
         happiness = 0;
     return happiness;
 }
-int player::get_and_change_fullness(int fullness_input)
+bool player::get_fullness()
 {
-    fullness += fullness_input;
-    if (fullness < 0)
-        fullness = 0;
     return fullness;
+}
+void player::change_fullness(bool fullness_input){
+    fullness = fullness_input;
 }
 int player::get_and_change_energy(int energy_input)
 {
@@ -188,31 +194,40 @@ void player::calculation_card_by_stat()
 }*/
 bool player::buying(int cost) // แก้ check ว่ามี VexPhone หรือไม่
 {
-    
     try
     {
-        if (account_balance + money < cost)
-            throw cost - money - account_balance;
-        if (money > cost)
-            money -= cost;
-        else
-        {
-            money = 0;
-            account_balance -= cost - money;
+        if(bag["VexPhone"]){
+            if (account_balance + money < cost)
+                throw cost - money - account_balance;
+            if (money >= cost)
+                money -= cost;
+            else
+            {
+                money = 0;
+                account_balance -= cost - money;
+            }
+            cout << "Payment successful :)" << endl;
         }
-        cout << "Payment successful :)" << endl;
+        else {
+            if(cost > money) throw cost - money;
+            money -= cost;
+            cout << "Payment successful :)" << endl;
+        }
+        return true;
     }
     catch (int money_need)
     {
         cout << "You need " << money_need << " dollar more!" << endl;
+        return false;
     }
 }
-void print_card(vector<card> temp){
+
+void player::print_card(){ // แยก desc เป็น 2 arr ด้วย
   int spaces = 6;
-  for(int i=0;i<temp.size();i++){
+  for(int i=0;i<pl_card.size();i++){
     cout << "=========================\n";
     for(int j=0;j<15;j++){
-    if(j==1)  cout << "|" << string( spaces, ' ' ) <<  "Hello world!" << string( spaces-1, ' ' ) << "|";
+    if(j==1)  cout << "|" << string( spaces, ' ' ) << "Hello world!" << string( spaces-1, ' ' ) << "|";
     else if(j==6) cout << "|" << string(14/2,' ') << "Money : -10"  << string(14/2 - 2,' ') << "|";
     else if(j==7) cout << "|" << string(13/2,' ') << "Health : -10"  << string(13/2 - 1,' ') << "|";
     else if(j==8) cout << "|" << string(10/2,' ') << "Happiness : -10"  << string(10/2 - 2,' ') << "|";
@@ -228,19 +243,21 @@ void print_card(vector<card> temp){
 void player::do_work()
 {
     // (20 energy/ 1 tap/ 12 exp)
-    try
-    {
-        if (energy <= 0)
-            throw;
-
-        money += (energy >= 20) ? (salary * 8) : (static_cast<int>(floor(salary * 8 * static_cast<float>(energy) / 20)));
+    // try
+    // {
+        if (energy <= 0){
+             money += (energy >= 20) ? (salary * 8) : (static_cast<int>(floor(salary * 8 * static_cast<float>(energy) / 20)));
         work_EXP += (energy >= 20) ? (12) : (static_cast<int>(floor(12 * static_cast<float>(energy) / 20)));
         energy -= (energy >= 20) ? (20) : (energy);
         if (bag["Notebook"])money += 4;
         cout << "Work work work!" << endl;
-    }
-    catch (...)
-    {
-        cout << "You not have energy! go home and recharge your energy." << endl;
-    }
+        }
+            //throw myex["lag_energy"];
+    // }
+    /*catch (exception &e) {
+			cout << e.what();
+			cout << endl;
+    }*/
 }
+
+// #endif

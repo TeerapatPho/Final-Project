@@ -1,3 +1,6 @@
+#ifndef FUNCTION_H
+#define FUNCTION_H
+
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -6,10 +9,10 @@
 
 using namespace std;
 
-#include "Place.h"
 
-#ifndef FUNCTION_H
-#define FUNCTION_H
+
+#include "conio.h"
+#include "Place.h"
 
 vector<place*> plList;
 
@@ -82,6 +85,7 @@ T selection_menu(vector<T> choices, vector<T> addition) {
     // เหลือให้เลือกได้ด้วย w,a,s,d  
     // กับรีเทิร์นค่าตัวเลือกกลับมา
     return "Work";
+
 }
 
 place* name2placePtr(string plName) { // <<---- sad
@@ -93,3 +97,80 @@ place* name2placePtr(string plName) { // <<---- sad
 }
 
 #endif
+
+/*
+    ใช้ wasd เลื่อน
+    [a]  b   c
+     d   e   f
+     g   h 
+
+     x   y   z
+    ----------------------------
+     a  [b]  c
+     d   e   f
+     g   h 
+
+     x   y 
+    ----------------------------
+     a   b   c
+    [d]  e   f
+     g   h 
+
+     x   y 
+    ----------------------------
+     a   b   c
+     d   e   f
+     g    
+
+    [x]  y   
+
+    คือ addition ส่วนมากจะใช้วางพวก "work", "return" และอื่นๆ มันจะแยกกับกลุ่มตัวเลือกด้านบน และจะอยู่ row สุดท้ายของ s_board เสมอ
+
+
+	int x = 0, y = 0;
+	char c;
+	do {
+		system("clear");
+		for (int i = 0; i < s_board.size(); i++) {
+			for(int j = 0; j < s_board[0].size(); j++) {
+        //if(s_board[x][y] == " ") y--;
+        if (x != i || y != j) cout << " " << s_board[i][j] << " ";
+				else cout << "[" << s_board[i][j] << "]";
+
+      }
+      
+			cout << endl; 
+		}
+		c = getch();
+		if (c == 'w' && x != 0) 
+    { 
+      if(s_board[x][y]==" "){
+              if(s_board[x-1][y]==" ") x++;
+              else if(s_board[x-1][y]!=" ") x--;
+          } 
+    }
+		else if (c == 's' && x != s_board.size() - 1) 
+    { 
+      if(s_board[x][y]==" "){
+              if(s_board[x+1][y]==" ") x--;
+              else if(s_board[x+1][y]!=" ") x++;
+          } 
+    }
+		else if (c == 'a' && y != 0) 
+    { 
+      if(s_board[x][y]==" "){
+              if(s_board[x][y-1]==" ") y++;
+              else if(s_board[x][y-1]!=" ") y--;
+          }
+    }
+		else if (c == 'd' && y != s_board[0].size()-1)      { 
+      if(s_board[x][y]==" "){
+              if(s_board[x][y+1]==" ") y--;
+              else if(s_board[x][y+1]!=" ") y++;
+          }  
+    }  
+		cout << x << y << endl;
+		
+	} while(true);
+
+*/

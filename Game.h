@@ -1,6 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
 
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+
+#include "Card.h"
+#include "Player.h"
+#include "Board.h"
+#include "Option.h"
+
 vector<card> gen_pEventCard()
 { // generate personal card
     vector<card> deck;

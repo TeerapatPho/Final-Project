@@ -1,5 +1,5 @@
 compile: main.cpp
-	 g++ main.cpp -o final
+	 g++ Board.cpp Game.cpp Option.cpp Place.cpp Player.cpp main.cpp -o final
 
 run: final
 	 ./final

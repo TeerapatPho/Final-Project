@@ -1,6 +1,7 @@
 #ifndef OPTION_H
 #define OPTION_H
 
+
 class option {
     int map_no;
     int max_round;

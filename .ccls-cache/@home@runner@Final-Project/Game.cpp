@@ -6,11 +6,15 @@
 
 using namespace std;
 
+// #ifndef GAME_CPP
+// #define GAME_CPP
+
+#include "Function.h"
 #include "Board.h"
+#include "Place.h"
 #include "Card.h"
 #include "Option.h"
 #include "Player.h"
-#include "Option.h"
 #include "Game.h"
 
 game::game(option opt)
@@ -102,10 +106,14 @@ void game::change_round()
 void game::next_player_turn()
 {
     player *p = player_q.front();
+    map<string, bool> bag = p->get_bag();
 
-    if(p->get_and_change_food_reserve() > 0) {
-        p->get_and_change_fullness(true);
-        p->get_and_change_food_reserve(-1);
+    if(bag["Loterry"]) {
+        int chance = rand() % 10;
+        if(chance == 1) {
+            int win_lot = 500 + rand() % 300;
+            p->get_card(card("You win the lottery!", "Congratulation ,you are the luckly one!", 0, 0, 0, win_lot));
+        }
     }
     
     if (curr_round > 1)
@@ -114,6 +122,8 @@ void game::next_player_turn()
         int num = rand() % deck_p.size();
         p->get_card(deck_p[num]);
     }
+
+    p->change_fullness(false);
 
     do
     {
@@ -151,6 +161,11 @@ void game::next_player_turn()
 
     } while (player_q.front()->get_and_change_energy() >= 0);
 
+    if(p->get_and_change_food_reserve() > 0 && p->get_fullness() == false) {
+        p->change_fullness(true);
+        p->get_and_change_food_reserve(-1);
+    }
+
     player_q.pop();
     player_q.push(p);
 }
@@ -161,6 +176,9 @@ void game::score_cal()
     {
         player *temp = player_q.front();
         int score = temp->get_and_change_education() + temp->get_and_change_health() + temp->get_and_change_happiness() + temp->get_and_change_money();
+
+        map<string, bool> bag = temp->get_bag();
+        /* ให้คะแนนชิ้นละ 100 */
 
         temp->display();
         cout << "------------------------------------" << endl;
@@ -198,3 +216,5 @@ void game::place_ui(string curr)
         name2placePtr(curr)->ui(player_q.front(), curr);
     }
 }
+
+// #endif

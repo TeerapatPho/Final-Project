@@ -1,3 +1,6 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <string>
 #include <map>
 #include <queue>
@@ -6,9 +9,6 @@
 using namespace std;
 
 #include "Card.h"
-
-#ifndef PLAYER_H
-#define PLAYER_H
 
 vector<card> generate_situation_card()
 {
@@ -59,7 +59,8 @@ public:
     int get_and_change_money(int = 0);
     int get_and_change_health(int = 0);
     int get_and_change_happiness(int = 0);
-    int get_and_change_fullness(int = 0);
+    bool get_fullness();
+    void change_fullness(bool);
     int get_and_change_energy(int = 0);
     int get_and_change_salary(int = 0);
     int get_and_change_account_balance(int = 0);
@@ -69,8 +70,8 @@ public:
 
     void display();
     void get_card(card);
-    void add_plcard(card temp){pl_card.push(temp);}
-    queue<card> get_plcard(){return pl_card;}
+    void print_card();
+    void add_plcard(card temp) { pl_card.push(temp); }
     void calculation_card_by_stat();
 
     void do_work();
