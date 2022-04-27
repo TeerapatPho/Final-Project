@@ -20,44 +20,50 @@ class sell_object;
 class board;
 class game;
 
-vector<place*> plList;
-
-/* function prototype */
-void setup();
-template<typename ClassObj> ClassObj gen_tempObj(); // maybe delete
-template<typename T> int checkIndex_vector(T, vector<T>);
-template<typename T> T selection_menu(vector<T>, vector<T>);
-place* name2placePtr(string plName);
-
+#include "Function.h"
 #include "Card.h"
 #include "Player.h"
 #include "Place.h"
 #include "Board.h"
 #include "Game.h"
-
-
+#include "Option.h"
 
 int main() {
     setup();
-    std::cout << "Hello World!\n";
+    option opt;
     
-    player test("test");
-    // test.get_and_change_education(100);
-    // test.get_and_change_workEXP(100);
-    // gym a;
-    // job_office b;
-    // cout << b.req_route(test, &a, "Janitor") << endl;;
+    // splash page?
 
-    // board b;
-    // b.print_board("Culture Center", 500);
-    // cout << b.cal_distance_template("Culture Center", "Fancy Housing") << endl;
-    // cout << b.get_plIndex("Lousy Housing") << endl;
+    // main menu
+    do {
+        string main_choice = selection_menu<string>({},{"Option", "Play", "Exit"});
 
-    // vector<string> plName = {"Cluckers", "Gym", "Lousy Housing", "Market", "Fancy Housing", "Bank", "VexCorp", "Job Office", "Culture Center", "University", "Appliance Store"};
-    // vector<string> sub = {" ", "return", "work"};
-    // selection_menu<string>(plName, sub);
-
-    // option -> game //map(1,2,3,4,5)
+        if (main_choice == "Exit") return 0; // or make ending page
+        else if (main_choice == "Option") {
+            string opt_choice = selection_menu<string>({"Select Map Number", "Set Max Round", "Set Player Number"},{" ", "Return", " "});
+            cout << "Current map number: " << opt.get_mapNo();
+            cout << " Max Play round: " << opt.get_maxRound();
+            cout << " Player Number: " << opt.get_nPlayer() << endl;
+            opt.display_map();
+            if(opt_choice == "Return") continue;
+            int x;
+            cout << opt_choice << ": ";
+            cin >> x;
+            else if(opt_choice == "Select Map Number") {
+                opt.set_mapNo(x);
+            }
+            else if(opt_choice == "Set Max Round") {
+                opt.set_maxRound(x);
+            }
+            else if(opt_choice == "Set Player Number") {
+                opt.set_nPlayer(x);
+            }
+        }
+        else if (main_choice == "Play") {
+            game game_(opt);
+        }
+    } while (true);
+    
     
     game game_(10); // name + exit
     // game_.change_round();
@@ -67,78 +73,6 @@ int main() {
 
     // dynamic_cast<home*>(name2placePtr("Lousy Housing"))->ui(&test);
     // name2placePtr("Cluckers")->ui(&test, "Cluckers");
-}
-
-void setup() {
-    srand(time(0));
-
-    plList.push_back(new restaurant);
-    plList.push_back(new gym);
-    plList.push_back(new home);
-    plList.push_back(new market);
-    plList.push_back(new apartment);
-    plList.push_back(new bank);
-    plList.push_back(new tech_coop);
-    plList.push_back(new job_office);
-    plList.push_back(new art);
-    plList.push_back(new school);
-    plList.push_back(new it_store);
-    plList.push_back(new mall);
-}
-
-template<typename ClassObj>
-ClassObj gen_tempObj() {
-    ClassObj temp;
-    return temp;
-}
-
-template<typename T>
-int checkIndex_vector(T value, vector<T> vec) {
-    for(int i = 0; i < vec.size(); i++) {
-        if (vec[i] == value) return i;
-    }
-    return -1;
-}
-
-template<typename T>
-T selection_menu(vector<T> choices, vector<T> addition) {
-    //choices คือช้อยหลักที่จะให้แสดงผลได้เยอะๆ และแสดงด้านบน
-    //addition จะแสดงด้านล่างและ มีแค่ 3 อันเท่านัน ห้ามขาดห้ามเกินถ้ามไม่มีใหแทนเป็น " " เช่ร {" ", "return", "work"}
-    vector<vector<string>> s_board;
-    int height = ceil(static_cast<float>(choices.size())/3) + 1;
-    s_board.resize( height );
-    for( auto &i : s_board )
-        i.resize(3);
-
-    // set data to s_board
-    for(int i = 0; i < choices.size(); i++)
-        s_board[i/3][i%3] = choices[i];
-    if(choices.size() % 3 != 0) {
-        for(int i = choices.size() % 3; i < 3; i++) 
-            s_board[height-2][i] = " ";
-    }
-    for(int i = 0; i < 3; i++)
-        s_board[height-1][i] = addition[i];
-
-
-    // print board // อันนี้ลบก็ได้นะ แค่ให้แสดงหน้าตาเฉยๆว่าตัวเมนูจะมีหน้าตาเป็นไง
-    for(int i = 0; i < s_board.size(); i++) { 
-        if(i == s_board.size() - 1) cout << endl;
-        for(int j = 0; j < 3; j++)
-            cout << setw(25) << s_board[i][j];
-        cout << endl;
-    }
-    // เหลือให้เลือกได้ด้วย w,a,s,d  
-    // กับรีเทิร์นค่าตัวเลือกกลับมา
-    return "Work";
-}
-
-place* name2placePtr(string plName) { // <<---- sad
-    for(auto &itr: plList) {
-        if (itr->get_name() == plName) 
-            return itr;
-    }
-    return nullptr;
 }
 
 

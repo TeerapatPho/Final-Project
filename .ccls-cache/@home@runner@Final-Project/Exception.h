@@ -1,5 +1,11 @@
 #include <exception> // อย่าลืมลบ
+#include <string>
+#include <map>
+
 using namespace std;
+
+#ifndef EXCEPTION_H
+#define EXCEPTION_H
 
 class game_exception : public exception{
     const char* err_msg; // char* a= "asdasd"; func("xxxxxxx"); 
@@ -21,3 +27,5 @@ map<string,game_exception> gen_exception(){
   myex["lag_req"] = game_exception("You not have property that company want."); //rejected work request
   return myex;
 }
+
+#endif

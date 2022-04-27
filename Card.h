@@ -1,3 +1,11 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+#ifndef CARD_H
+#define CARD_H
+
 class card
 {
 private:
@@ -30,3 +38,5 @@ card::card(string name, string desc, int hea, int hap, int en, int mon)
     this->energy = en;
     this->money = mon;
 }
+
+#endif
