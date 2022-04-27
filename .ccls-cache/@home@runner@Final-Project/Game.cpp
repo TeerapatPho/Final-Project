@@ -178,7 +178,11 @@ void game::score_cal()
         int score = temp->get_and_change_education() + temp->get_and_change_health() + temp->get_and_change_happiness() + temp->get_and_change_money();
 
         map<string, bool> bag = temp->get_bag();
-        /* ให้คะแนนชิ้นละ 100 */
+        /* ให้คะแนนชิ้นละ 100 
+        for(auto ipr : bag) {
+            
+        }
+*/
 
         temp->display();
         cout << "------------------------------------" << endl;

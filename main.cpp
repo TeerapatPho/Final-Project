@@ -10,9 +10,13 @@
 #include <time.h>
 #include <limits>
 
+#include "Color.h"
+#include "conio.h"
+
 using namespace std;
 
 /* class prototype */
+class option;
 class card;
 class player;
 class place;
@@ -20,8 +24,26 @@ class sell_object;
 class board;
 class game;
 
-#include "conio.h"
+class restaurant;
+class gym;
+class home;
+class market;
+class apartment;
+class bank;
+class tech_coop;
+class job_office;
+class art;
+class school;
+class it_store;
+class mall;
+
 #include "Function.h"
+#include "Board.h"
+#include "Card.h"
+#include "Place.h"
+#include "Board.h"
+#include "Player.h"
+#include "Exception.h"
 #include "Game.h"
 #include "Option.h"
 #include "Color.h"
@@ -31,11 +53,12 @@ int main() {
     option opt;
     
     // splash page?
-    system("clear");       cout<<MAG<<"=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=\n"<<reset;  cout<<CYN<<"=================================================================================================================\n\n\n"<<reset;
+    //system("clear"); 
+cout<<MAG<<"=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=\n"<<reset;  cout<<CYN<<"=================================================================================================================\n\n\n"<<reset;
         cout<<WHT<<"                                        "<<YEL<<">>>"<<reset<<"   Work-Life Balance Game!  "<<YEL<<"<<<    \n\n"<<reset;
-cout<<"                  Use Key"<<RED<<"(W)"<<reset<<" to move Up, "<<RED<<"(S)"<<reset" to move Down, "<<RED<<"(A)"<<reset<<" to move Left and "<<RED<<"(D)"<<reset<<" to move Right\n\n\n";  cout<<CYN"=================================================================================================================\n"<<reset;
+cout<<"                  Use Key "<<RED<<"(W)"<<reset<<" to move Up, "<<RED<<"(S)"<<reset" to move Down, "<<RED<<"(A)"<<reset<<" to move Left and "<<RED<<"(D)"<<reset<<" to move Right\n\n\n";  cout<<CYN"=================================================================================================================\n"<<reset;
   cout<<MAG"=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=\n\n\n"<<reset<<endl;
-    getch();
+   // getch();
   
     // main menu
     do {

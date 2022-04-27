@@ -4,8 +4,8 @@
 
 using namespace std;
 
-#ifndef OPTION_CPP
-#define OPTION_CPP
+// #ifndef OPTION_CPP
+// #define OPTION_CPP
 
 #include "Option.h"
 #include "Board.h"
@@ -35,4 +35,4 @@ void option::display_map() {
     b.print_board("none", 0);
 }
 
-#endif
+// #endif

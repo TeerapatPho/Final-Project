@@ -1,19 +1,3 @@
-#ifndef FUNCTION_H
-#define FUNCTION_H
-
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <vector>
-#include <cmath>
-
-using namespace std;
-
-
-
-#include "conio.h"
-#include "Place.h"
-
 vector<place*> plList;
 
 /* function prototype */
@@ -95,8 +79,6 @@ place* name2placePtr(string plName) { // <<---- sad
     }
     return nullptr;
 }
-
-#endif
 
 /*
     ใช้ wasd เลื่อน
