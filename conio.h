@@ -1,6 +1,3 @@
-#ifndef CONIO_H
-#define CONIO_H
-
 #include <termios.h>
 #include <stdio.h>
 
@@ -42,5 +39,3 @@ char getch(void)
 {
   return getch_(0);
 }
-
-#endif

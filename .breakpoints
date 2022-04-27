@@ -15,20 +15,6 @@
         "version": 7424,
         "index": 0
       }
-    ],
-    "main.cpp": [
-      {
-        "id": "0b56a5c9-b6df-402d-9967-4ae8970599d2",
-        "line": 39,
-        "version": 1296,
-        "index": 555
-      },
-      {
-        "id": "25d3a346-116a-4a96-bebe-2e7de66d45cc",
-        "line": 87,
-        "version": 1296,
-        "index": 2786
-      }
     ]
   }
 }
