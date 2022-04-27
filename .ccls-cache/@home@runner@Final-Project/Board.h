@@ -39,7 +39,7 @@ board::board(int map)
         addEdge("Mall", "Cluckers", 1);
     }
     else if(map == 2) {
-        
+        return;
     }
     
    
