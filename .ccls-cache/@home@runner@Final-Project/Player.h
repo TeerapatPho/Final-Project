@@ -215,7 +215,7 @@ void player::display()
     cout << "Meiter : " << metier << endl;
     cout << "Work Place : " << work_place << endl;
     cout << "Current Place : " << current_place << endl;
-    cout << "Edcutaion : " << education << endl;
+    cout << "Educataion : " << education << endl;
     cout << "Work Experience : " << work_EXP << endl;
     cout << "Health : " << health << endl;
     cout << "Balance : " << money << "$" << endl;
