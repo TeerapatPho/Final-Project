@@ -1,7 +1,7 @@
 vector<card> generate_situation_card()
 {
     vector<card> situation_card_deck;
-    situation_card_deck.push_back(card("Hungry!", "You forgot to eat meal, Your energy have been decrease.", 0, 0, -15, 0));
+    situation_card_deck.push_back(card("Hungry!", "You forgot to eat meal, Your energy have been decrease.", 0, 0, -60, 0));
     situation_card_deck.push_back(card("Are you serious?", "You are stressfull, Your health and energy have been decrease.", -10, 0, -5, 0));
     situation_card_deck.push_back(card("Sick Stomach", "You have an upset stomach, you must go to the hospital.", 0, 0, -10, -45));
     // situation_card.push_back(card("","You have an upset stomach, you must go to the hospital.",0,0,0,-40));
@@ -36,6 +36,7 @@ public:
     player(string = ""); //รับชื่อผู้เล่น
     // ~player();
     // get and change ถ้าไม่ได้ส่งค่าเข้ามาจะเป็นการ return ค่าปัจจุบันกลับไป แต่ถ้าส่งค่าเข้ามาจะเป็นการเปลี่ยน/บวกข้อมูลแล้ว return กลับไป
+    string get_name() { return name; }
     string get_and_change_metier(string = "");
     string get_and_change_work_place(string = "");
     string get_and_change_current_place(string = "");
@@ -54,7 +55,8 @@ public:
     int get_and_change_account_balance(int = 0);
     int get_and_change_food_reserve(int = 0);
     map<string, bool> get_bag();
-    bool buying(int); // สำหรับ player ที่มีโทรศัพท์มือถือ ส่งราคาสินค้า(แบบไม่ติดลบ)
+    void set_bag(string key, bool have) { bag[key] = have; }
+    bool buying(int); //ส่งราคาสินค้า(แบบไม่ติดลบ)
 
     void display();
     void get_card(card);
@@ -70,7 +72,8 @@ player::player(string name_input)
     name = name_input;
     metier = "None";
     work_place = "None";
-    current_place = "None";
+    current_place = "Lousy Housing";
+    home = "Lousy Housing";
     car_type = "Walk";
     education = 0; // max = 700;
     work_EXP = 0;  // max = {0, 100, 200, 400, 800, 1600, 3200, 6400}; -> 10 energy/ 1 tap/ 12 exp
@@ -206,6 +209,8 @@ map<string, bool> player::get_bag()
 
 void player::display()
 {
+    cout <<RED<< "Player Stat : "<< reset << name << endl;
+    cout << "==============================\n\n";
     cout << "Name : " << name << endl;
     cout << "Meiter : " << metier << endl;
     cout << "Work Place : " << work_place << endl;
@@ -213,13 +218,14 @@ void player::display()
     cout << "Edcutaion : " << education << endl;
     cout << "Work Experience : " << work_EXP << endl;
     cout << "Health : " << health << endl;
-    cout << "Balance : " << money << endl;
+    cout << "Balance : " << money << "$" << endl;
     cout << "Debt : " << debt << endl;
     cout << "Happiness : " << happiness << endl;
     cout << "Fullness : " << fullness << endl;
     cout << "Energy : " << energy << endl;
-    cout << "Salary : " << salary << endl;
-    cout << "Account Balance : " << account_balance << endl;
+    cout << "Salary : " << salary << "$"<< endl;
+    cout << "Account Balance : " << account_balance << "$" << endl;
+    cout << "\n\n";
 }
 
 void player::get_card(card card_input)
@@ -232,6 +238,7 @@ void player::get_card(card card_input)
     get_and_change_money(status[3]);
     get_and_change_happiness(status[1]);
     cout << "================================" << endl;
+    pl_card.push(card_input);
 }
 void player::calculation_card_by_stat()
 {
@@ -272,44 +279,55 @@ bool player::buying(int cost) // แก้ check ว่ามี VexPhone หร
     catch (int money_need)
     {
         cout << "You need " << money_need << " dollar more!" << endl;
+        getch();
         return false;
     }
 }
 
-void player::print_card(){ // แยก desc เป็น 2 arr ด้วย
-  int spaces = 6;
+void player::print_card(){ 
+  if(pl_card.size()==0) return;
+  cout << "Recieved Card \n\n";
   for(int i=0;i<pl_card.size();i++){
+    int spaces = (25-pl_card.front().get_card_name().size())/2; 
+    system("clear");
+    cout << "Current Player: " << name << endl;
+    vector<int> temp = pl_card.front().get_value();
     cout << "=========================\n";
-    for(int j=0;j<15;j++){
-    if(j==1)  cout << "|" << string( spaces, ' ' ) << "Hello world!" << string( spaces-1, ' ' ) << "|";
-    else if(j==6) cout << "|" << string(14/2,' ') << "Money : -10"  << string(14/2 - 2,' ') << "|";
-    else if(j==7) cout << "|" << string(13/2,' ') << "Health : -10"  << string(13/2 - 1,' ') << "|";
-    else if(j==8) cout << "|" << string(10/2,' ') << "Happiness : -10"  << string(10/2 - 2,' ') << "|";
-    else if(j==9) cout << "|" << string(13/2,' ') << "Energy : -10"  << string(13/2 - 1,' ') << "|";
+    for(int j=0;j<15;j++){ 
+    if(j==1)  cout << "|" << string( spaces, ' ' ) << pl_card.front().get_card_name() << string( 23-spaces-pl_card.front().get_card_name().size(), ' ' ) << "|"; 
+    else if(j==6) cout << "|" << string(14/2,' ') << "Money : "<< setw(3) << temp[3]  << string(14/2 - 2,' ') << "|"; 
+    else if(j==7) cout << "|" << string(13/2,' ') << "Health : "<< setw(3) << temp[0] << string(13/2 - 1,' ') << "|";
+    else if(j==8) cout << "|" << string(10/2,' ') << "Happiness : "<< setw(3) << temp[1]  << string(10/2 - 2,' ') << "|";
+    else if(j==9) cout << "|" << string(13/2,' ') << "Energy : "<< setw(3) << temp[2] << string(13/2 - 1,' ') << "|";
     else cout << "|                       |";
     cout << "\n";
     }
-    cout << "=========================\n";
-    
+    cout << "=========================\n\n";
+    cout << "Description: \t" << pl_card.front().get_card_desc() << endl;
+    pl_card.pop();
+    getch();
   }
+  system("clear");
 }
 
 void player::do_work()
 {
     // (20 energy/ 1 tap/ 12 exp)
-    // try
-    // {
-        if (energy <= 0){
+     try
+     {
+        if (energy > 0){
              money += (energy >= 20) ? (salary * 8) : (static_cast<int>(floor(salary * 8 * static_cast<float>(energy) / 20)));
         work_EXP += (energy >= 20) ? (12) : (static_cast<int>(floor(12 * static_cast<float>(energy) / 20)));
         energy -= (energy >= 20) ? (20) : (energy);
         if (bag["Notebook"])money += 4;
         cout << "Work work work!" << endl;
+        getch();
         }
-            //throw myex["lag_energy"];
-    // }
-    /*catch (exception &e) {
+        else throw *myex["lag_energy"];
+     }
+     catch (exception &e) {
 			cout << e.what();
 			cout << endl;
-    }*/
+            getch();
+     }
 }

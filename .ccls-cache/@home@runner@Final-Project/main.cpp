@@ -10,8 +10,7 @@
 #include <time.h>
 #include <limits>
 // #include <conio.h>
-
-#include "Color.h"
+#include <functional>
 #include "conio.h"
 
 using namespace std;
@@ -23,7 +22,7 @@ ClassObj gen_tempObj(); // maybe delete
 template <typename T>
 int checkIndex_vector(T, vector<T>);
 template <typename T>
-T selection_menu(vector<T>, vector<T>);
+T selection_menu(string, vector<T>, vector<T>, function<void(void)>);
 
 /* class prototype */
 class option;
@@ -51,14 +50,15 @@ place *name2placePtr(string plName);
 
 vector<place *> plList;
 
+#include "Exception.h"
+map<string, game_exception *> myex;
+#include "Color.h"
 #include "Card.h"
 #include "Player.h"
 #include "Place.h"
 #include "Board.h"
-#include "Exception.h"
 #include "Option.h"
 #include "Game.h"
-#include "Color.h"
 
 int main()
 {
@@ -73,54 +73,127 @@ int main()
          << reset;
     cout << WHT << "                                        " << YEL << ">>>" << reset << "   Work-Life Balance Game!  " << YEL << "<<<    \n\n"
          << reset;
-    cout << "                  Use Key " << RED << "(W)" << reset << " to move Up, " << RED << "(S)" << reset " to move Down, " << RED << "(A)" << reset << " to move Left and " << RED << "(D)" << reset << " to move Right\n\n\n";
-    cout << CYN "=================================================================================================================\n"
+    cout << "                  Use Key " << RED << "(W)" << reset << " to move Up, " << RED << "(S)" << reset " to move Down, " << RED << "(A)" << reset << " to move Left and " << RED << "(D)" << reset << " to move Right\n";
+    cout << "                                            Use Space Bar to select choice\n";
+  cout << " URL for reading instruction : https://drive.google.com/file/d/1qE31XvNP4qTzdbXpGW8roignbis41ZUT/view?usp=sharing\n\n\n";
+    cout << CYN << "=================================================================================================================\n"
          << reset;
-    cout << MAG "=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=\n\n\n"
+    cout << MAG << "=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=\n\n\n"
          << reset << endl;
     getch();
-
+  
+  system("clear");
+ cout << BLK << WHTB << "                                       " << endl;
+ cout << " █▀▀▀▀▀█ ▄ █ ▀███▄ ▀▀█▀█   ▀▄▄ █▀▀▀▀▀█ " << endl;
+ cout << " █ ███ █ ▄▄▄ █▀▄█ ▄ ▄ ▀▀▀▄▄█ ▀ █ ███ █ " << endl; 
+ cout << " █ ▀▀▀ █ ▄█ ▄▄  ▀▀▄ ▀▀▄▀ ▄ ▀▄  █ ▀▀▀ █ " << endl;
+ cout << " ▀▀▀▀▀▀▀ ▀▄█▄▀ █ █ ▀▄█▄▀ █ █▄█ ▀▀▀▀▀▀▀ " << endl;
+ cout << " ▀▀██▀▄▀█▀▀▄▀▄▄▄▄▀█▀▄█▄█▄  ▀▀▄▀ █ █▄█  " << endl;
+ cout << " █▀▄▀█▄▀ █ █ ▄█▀█▀▀ ▄█▄  █ █▀█▀▄█▀█▀▄▀ " << endl;
+ cout << " ▀▄▀███▀██▄  ▀ ▀█▄▀ █  ▀▀ ▀▄  ▀▀▄▀▀█▄▀ " << endl;
+ cout << " ▄▀▀▀  ▀▀▀▄██▀ ▄ ▄   ▄▄█▄█▀▄██████▄▀▀█ " << endl;
+ cout << " ▀ ▀▄▀▀ █▄▄▀▄▄▄▄ ▀  █ ▀▄▀▀▄▀▄ ▀▄▀▀█▄▀  " << endl; 
+ cout << " ▄▄▄▀▀▀██▄█ ▄█▀▀█▀▀ ██▄ ▀ ▄█▄▀ ██ ▀▀█  " << endl;
+ cout << " ▀▀█▄▀▀▀ ▄ ▀ ▀ ▀▀▄▀  █▄▀▄▀▄█ ▄▀▀▄▀▀▀█▀ " << endl;
+ cout << " ▀▀▄▀▄▀▀████▀ ▄▀▄ █▄ ▄█▄█  █▀▄▀█▀▀ ▀█  " << endl; 
+ cout << " █▀ █▀▀▀▄▀ ▄▀▄▄▄ ▄█▀▀█ ▀█ ▀█ ▄▀▀▄▀▄▀█▀ " << endl; 
+ cout << " █ ▀█▄ ▀▄▀ ▄ ▄█▀█▀   ▀▄▀ ▀▀▀▀▄█ ▄█▀▀▀█ " << endl; 
+ cout << " ▀ ▀ ▀▀▀ ███ ▀ ▀ ▄▀ ▄▀▄▀  ▄▀██▀▀▀███   " << endl;
+ cout << " █▀▀▀▀▀█ ▀▄ █▀ ▄▀ ▀▀ ▄▄  ▄▀▀ █ ▀ █  ▀▀ " << endl;
+ cout << " █ ███ █ █▀▄▀▄▄▄▀██▄▄▀ ▀▄  █▀███▀█ ▀▄█ " << endl;
+ cout << " █ ▀▀▀ █ █▄▀ ▄█▀█▀ █▄▀█▄ ▀  ▄█▄ ▄ ▀▀▀█ " << endl;
+ cout << " ▀▀▀▀▀▀▀ ▀ ▀ ▀ ▀▀ ▀  ▀ ▀  ▀ ▀ ▀▀▀ ▀▀▀▀ " << endl;
+ cout << "                                       " << reset << endl;
+ getch();
     // main menu
     do
     {
-        string main_choice = selection_menu<string>({}, {"Option", "Play", "Exit"});
+        string main_choice = selection_menu<string>("Work-Life Balance", {}, {"Option", "Play", "Exit"}, [&]() -> void {});
 
         if (main_choice == "Exit")
-            return 0; // or make ending page
+        {
+            cout << MAG << "=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=\n"
+                 << reset;
+            cout << CYN << "=================================================================================================================\n\n\n";
+            cout << RED << "                                        " << "Hasta luego! come for fun next time ;)\n\n\n\n";
+            cout << CYN << "=================================================================================================================\n"
+                 << reset;
+            cout << MAG << "=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=v=.=\n\n\n"
+                 << reset << endl;
+            getch();
+            return 0;
+        }
         else if (main_choice == "Option")
         {
-            cout << "Current map number: " << opt.get_mapNo();
-            cout << " Max Play round: " << opt.get_maxRound();
-            cout << " Player Number: " << opt.get_nPlayer() << endl;
-            opt.display_map();
-            string opt_choice = selection_menu<string>({"Select Map Number", "Set Max Round", "Set Player Number"}, {" ", "Return", " "});
-            if (opt_choice == "Return")
-                continue;
-            int x;
-            cout << opt_choice << ": ";
-            cin >> x;
-            if (opt_choice == "Select Map Number")
+            do
             {
-                opt.set_mapNo(x);
-            }
-            else if (opt_choice == "Set Max Round")
-            {
-                opt.set_maxRound(x);
-            }
-            else if (opt_choice == "Set Player Number")
-            {
-                opt.set_nPlayer(x);
-            }
+                string opt_choice = selection_menu<string>("Option", {"Select Map Number", "Set Max Round", "Set Player Number"}, {" ", "Return", " "}, [&]() -> void
+                                                           {
+                cout << "Current map number: " << opt.get_mapNo();
+                cout << " Max Play round: " << opt.get_maxRound();
+                cout << " Player Number: " << opt.get_nPlayer() << endl;
+                opt.display_map(); });
+                if (opt_choice == "Return")
+                    break;
+                int x;
+                cout << opt_choice << ": ";
+                try {
+                    cin >> x;
+                    if (cin.fail()) throw *myex["expect_int"];
+                }
+                catch (exception& e) {
+                    cerr << e.what() << endl;
+                    getch();
+
+                    cin.clear(); // error
+			        cin.ignore(10, '\n');
+                }
+                if (opt_choice == "Select Map Number")
+                {
+                    if(x < 1 || x > 4) {
+                        cout << "Please Select From 1-4" << endl;
+                        continue; 
+                    }
+                    opt.set_mapNo(x);
+                }
+                else if (opt_choice == "Set Max Round")
+                {
+                    if(x < 1) {
+                        cout << "Please don't select number lower than 1" << endl;
+                        continue; 
+                    }
+                    opt.set_maxRound(x);
+                }
+                else if (opt_choice == "Set Player Number")
+                {
+                    if(x < 1) {
+                        cout << "Please don't select number lower than 1" << endl;
+                        continue; 
+                    }
+                    opt.set_nPlayer(x);
+                }
+            } while (true);
         }
         else if (main_choice == "Play")
         {
             game game_(opt);
+            for (int round = 1; round <= opt.get_maxRound(); round++)
+            {
+                game_.change_round();
+                for (int i = 0; i < opt.get_nPlayer(); i++)
+                {
+                    game_.next_player_turn();
+                }
+            }
+            game_.score_cal();
         }
     } while (true);
 }
 
 void setup()
 {
+    myex = my_ex();
+
     srand(time(0));
 
     plList.push_back(new restaurant);
@@ -156,7 +229,7 @@ int checkIndex_vector(T value, vector<T> vec)
 }
 
 template <typename T>
-T selection_menu(vector<T> choices, vector<T> addition)
+T selection_menu(string header, vector<T> choices, vector<T> addition, function<void(void)> print)
 {
     // choices คือช้อยหลักที่จะให้แสดงผลได้เยอะๆ และแสดงด้านบน
     // addition จะแสดงด้านล่างและ มีแค่ 3 อันเท่านัน ห้ามขาดห้ามเกินถ้ามไม่มีใหแทนเป็น " " เช่ร {" ", "return", "work"}
@@ -177,72 +250,65 @@ T selection_menu(vector<T> choices, vector<T> addition)
     for (int i = 0; i < 3; i++)
         s_board[height - 1][i] = addition[i];
 
+    // move
+
     int x = 0, y = 0;
     char c;
     do
     {
         system("clear");
+        cout << BRED << header << reset << endl;
+        cout << CYN << "==============================================================" << reset << endl;
         for (int i = 0; i < s_board.size(); i++)
         {
             for (int j = 0; j < s_board[0].size(); j++)
             {
                 // if(s_board[x][y] == " ") y--;
                 if (x != i || y != j)
-                    cout << " " << s_board[i][j] << " ";
+                    cout << GRN << reset << left << setw(20) << " " + s_board[i][j] + " " << reset;
                 else
-                    cout << "[" << s_board[i][j] << "]";
+                    cout << GRN << left << setw(20) << "[" + s_board[i][j] + "]" << reset;
             }
 
             cout << endl;
         }
+        cout << CYN << "==============================================================" << reset << endl;
+        print();
         c = getch();
         if (c == 'w' && x != 0)
-        {
-            if (s_board[x][y] == " ")
-            {
-                if (s_board[x - 1][y] == " ")
-                    x++;
-                else if (s_board[x - 1][y] != " ")
-                    x--;
-            }
-        }
+            x--;
         else if (c == 's' && x != s_board.size() - 1)
-        {
-            if (s_board[x][y] == " ")
-            {
-                if (s_board[x + 1][y] == " ")
-                    x--;
-                else if (s_board[x + 1][y] != " ")
-                    x++;
-            }
-        }
+            x++;
+
         else if (c == 'a' && y != 0)
-        {
-            if (s_board[x][y] == " ")
-            {
-                if (s_board[x][y - 1] == " ")
-                    y++;
-                else if (s_board[x][y - 1] != " ")
-                    y--;
-            }
-        }
+            y--;
+
         else if (c == 'd' && y != s_board[0].size() - 1)
+            y++;
+        // cout << x << y << endl;
+        if (c == ' ')
         {
-            if (s_board[x][y] == " ")
+            try
             {
-                if (s_board[x][y + 1] == " ")
-                    y--;
-                else if (s_board[x][y + 1] != " ")
-                    y++;
+                if (s_board[x][y] == " ")
+                {
+                    x = 0, y = 0;
+                    throw *myex["choice_err"];
+                }
+                return s_board[x][y];
+            }
+            catch (exception &e)
+            {
+                cerr << e.what() << endl;
+                getch();
             }
         }
-        cout << x << y << endl;
 
     } while (true);
 }
 
 place *name2placePtr(string plName)
-{ // <<---- sad
+{
     for (auto &itr : plList)
     {
         if (itr->get_name() == plName)

@@ -6,7 +6,6 @@ class board
 
 public:
     board(int);
-    ~board(); // destructor ประกาศว่าบอร์ดถูกลบแล้ว
 
     /* graph method (undirectional weight graph) */
     void addEdge(string, string, int);
@@ -24,7 +23,9 @@ board::board(int map)
     //แก้ไขระยะห่างระหว่างสถานที่ แก้แค่เลขหลังสุดตัวเดียว
     //ถ้าอยากเพิ่มเหลี่ยมให้คนเดินลัดสนามหญ้าก็เพิ่มเอาได้เลย
     //การ addEdge ก็เหมือนเราเพิ่มถนนให้มัน ถ้าเราไม่ได้ต้องการถนนสายตรงไป 0-4 ก็ไม่ต้องมีก้ได้
-    if (map == 1) {
+    type = map;
+    if (map == 1)
+    {
         addEdge("Cluckers", "Gym", 1);
         addEdge("Gym", "Lousy Housing", 1);
         addEdge("Lousy Housing", "Market", 1);
@@ -38,16 +39,50 @@ board::board(int map)
         addEdge("Appliance Store", "Mall", 1);
         addEdge("Mall", "Cluckers", 1);
     }
-    else if(map == 2) {
-        return;
+    else if (map == 2)
+    {
+        addEdge("Cluckers", "Gym", 2);
+        addEdge("Gym", "Lousy Housing", 2);
+        addEdge("Lousy Housing", "Market", 2);
+        addEdge("Market", "Fancy Housing", 2);
+        addEdge("Fancy Housing", "Bank", 2);
+        addEdge("Bank", "VexCorp", 2);
+        addEdge("VexCorp", "Job Office", 2);
+        addEdge("Job Office", "Culture Center", 2);
+        addEdge("Culture Center", "University", 2);
+        addEdge("University", "Appliance Store", 2);
+        addEdge("Appliance Store", "Mall", 2);
+        addEdge("Mall", "Cluckers", 2);
     }
-    
-   
-}
-
-board::~board()
-{
-    cout << "Destructed Board" << endl;
+    else if (map == 3)
+    {
+        addEdge("Cluckers", "Gym", 0);
+        addEdge("Gym", "Lousy Housing", 0);
+        addEdge("Lousy Housing", "Market", 0);
+        addEdge("Market", "Fancy Housing", 0);
+        addEdge("Fancy Housing", "Bank", 0);
+        addEdge("Bank", "VexCorp", 0);
+        addEdge("VexCorp", "Job Office", 0);
+        addEdge("Job Office", "Culture Center", 0);
+        addEdge("Culture Center", "University", 0);
+        addEdge("University", "Appliance Store", 0);
+        addEdge("Appliance Store", "Mall", 0);
+        addEdge("Mall", "Cluckers", 0);
+    }
+    else if (map == 4)
+    {
+        addEdge("VexCorp", "Mall", 1);
+        addEdge("Mall","Gym", 1);
+        addEdge("Gym", "Market", 1);
+        addEdge("Market", "Lousy Housing", 1);
+        addEdge("Lousy Housing", "Bank", 1);
+        addEdge("Bank", "Cluckers", 1);
+        addEdge("Cluckers", "Job Office", 1);
+        addEdge("Job Office", "Fancy Housing", 1);
+        addEdge("Fancy Housing", "University", 1);
+        addEdge("University", "Appliance Store", 1);
+        addEdge("Appliance Store", "Culture Center", 1);
+    }
 }
 
 void board::addEdge(string u_name, string v_name, int distance)
@@ -134,79 +169,115 @@ int board::cal_distance_template(string start, string stop)
 
 void board::print_board(string present_place, int energy)
 {
-    for (int i = 0; i < 110; i++)
-        cout << "=";
-    cout << endl;
-    cout << "|     Cluckers     |          |       Gym        |          |   Lousy Housing  |          |      Market      |" << endl;
-    if (present_place == "Cluckers")
-        cout << "|        x         |";
-    else
-        cout << "|                  |";
-    cout << "          ";
-    if (present_place == "Gym")
-        cout << "|        x         |";
-    else
-        cout << "|                  |";
-    cout << "          ";
-    if (present_place == "Lousy Housing")
-        cout << "|        x         |";
-    else
-        cout << "|                  |";
-    cout << "          ";
-    if (present_place == "Market")
-        cout << "|        x         |" << endl;
-    else
-        cout << "|                  |" << endl;
-    for (int i = 0; i < 110; i++)
-        cout << "=";
-    cout << endl;
-    cout << "|       Mall       |                         Energy : " << setw(3) << energy;
-    cout << "                                 |   Fancy Housing  |" << endl;
-    if (present_place == "Mall")
-        cout << "|        x         |";
-    else
-        cout << "|                  |";
-    cout << "                                                                      ";
-    if (present_place == "Fancy Housing")
-        cout << "|        x         |" << endl;
-    else
-        cout << "|                  |" << endl;
-    cout << "====================                                                                      ====================" << endl;
-    cout << "|  Appliance Store |                  Now you are at " << setw(20) << present_place;
-    cout << "                 |       Bank       |" << endl;
-    if (present_place == "Appliance Store")
-        cout << "|        x         |";
-    else
-        cout << "|                  |";
-    cout << "                                                                      ";
-    if (present_place == "Bank")
-        cout << "|        x         |" << endl;
-    else
-        cout << "|                  |" << endl;
-    for (int i = 0; i < 110; i++)
-        cout << "=";
-    cout << endl;
-    cout << "|    University    |          |  Culture Center  |          |    Job Office    |          |      VexCorp     |" << endl;
-    if (present_place == "University")
-        cout << "|        x         |";
-    else
-        cout << "|                  |";
-    cout << "          ";
-    if (present_place == "Culture Center")
-        cout << "|        x         |";
-    else
-        cout << "|                  |";
-    cout << "          ";
-    if (present_place == "Job Office")
-        cout << "|        x         |";
-    else
-        cout << "|                  |";
-    cout << "          ";
-    if (present_place == "VexCorp")
-        cout << "|        x         |" << endl;
-    else
-        cout << "|                  |" << endl;
-    for (int i = 0; i < 110; i++)
-        cout << "=";
-    cout << endl;
+    // cout << type;
+    if (type == 1 || type == 2 || type == 3)
+    {
+        for (int i = 0; i < 110; i++)
+            cout << "=";
+        cout << endl;
+        cout << "|     Cluckers     |          |       Gym        |          |   Lousy Housing  |          |      Market      |" << endl;
+        if (present_place == "Cluckers")
+            cout << "|        " << RED << "x" << reset << "         |";
+        else
+            cout << "|                  |";
+        cout << "          ";
+        if (present_place == "Gym")
+            cout << "|        " << RED << "x" << reset << "         |";
+        else
+            cout << "|                  |";
+        cout << "          ";
+        if (present_place == "Lousy Housing")
+            cout << "|        " << RED << "x" << reset << "         |";
+        else
+            cout << "|                  |";
+        cout << "          ";
+        if (present_place == "Market")
+            cout << "|        " << RED << "x" << reset << "         |\n";
+        else
+            cout << "|                  |" << endl;
+        for (int i = 0; i < 110; i++)
+            cout << "=";
+        cout << endl;
+        cout << "|       Mall       |                         " << YEL << "Energy : " << setw(3) << energy << reset;
+        cout << "                                 |   Fancy Housing  |" << endl;
+        if (present_place == "Mall")
+            cout << "|        " << RED << "x" << reset << "         |";
+        else
+            cout << "|                  |";
+        cout << "                                                                      ";
+        if (present_place == "Fancy Housing")
+            cout << "|        " << RED << "x" << reset << "         |\n";
+        else
+            cout << "|                  |" << endl;
+        cout << "====================                                                                      ====================" << endl;
+        cout << "|  Appliance Store |                  " << BLU << "Now you are at " << setw(20) << present_place << reset;
+        cout << "                 |       Bank       |" << endl;
+        if (present_place == "Appliance Store")
+            cout << "|        " << RED << "x" << reset << "         |";
+        else
+            cout << "|                  |";
+        cout << "                                                                      ";
+        if (present_place == "Bank")
+            cout << "|        " << RED << "x" << reset << "         |\n";
+        else
+            cout << "|                  |" << endl;
+        for (int i = 0; i < 110; i++)
+            cout << "=";
+        cout << endl;
+        cout << "|    University    |          |  Culture Center  |          |    Job Office    |          |      VexCorp     |" << endl;
+        if (present_place == "University")
+            cout << "|        " << RED << "x" << reset << "         |";
+        else
+            cout << "|                  |";
+        cout << "          ";
+        if (present_place == "Culture Center")
+            cout << "|        " << RED << "x" << reset << "         |";
+        else
+            cout << "|                  |";
+        cout << "          ";
+        if (present_place == "Job Office")
+            cout << "|        " << RED << "x" << reset << "         |";
+        else
+            cout << "|                  |";
+        cout << "          ";
+        if (present_place == "VexCorp")
+            cout << "|        " << RED << "x" << reset << "         |\n";
+        else
+            cout << "|                  |" << endl;
+        for (int i = 0; i < 110; i++)
+            cout << "=";
+        cout << endl;
+    }
+    else if(type == 4) {
+     
+        cout << "\n";
+        cout << "<--------("; ((present_place=="VexCorp") ? (cout << RED << "x" << reset) : (cout << "1"));
+        cout << ")--------("; ((present_place=="Mall") ? (cout << RED << "x" << reset) : (cout << "2"));
+        cout << ")--------("; ((present_place=="Gym") ? (cout << RED << "x" << reset) : (cout << "3"));
+        cout << ")--------("; ((present_place=="Market") ? (cout << RED << "x" << reset) : (cout << "4"));
+        cout << ")--------("; ((present_place=="Lousy Housing") ? (cout << RED << "x" << reset) : (cout << "5"));
+        cout << ")--------("; ((present_place=="Bank") ? (cout << RED << "x" << reset) : (cout << "6"));
+        cout << ")--------("; ((present_place=="Cluckers") ? (cout << RED << "x" << reset) : (cout << "7"));
+        cout << ")--------("; ((present_place=="Job Ofiice") ? (cout << RED << "x" << reset) : (cout << "8"));
+        cout << ")--------("; ((present_place=="Fancy Housing") ? (cout << RED << "x" << reset) : (cout << "9"));
+        cout << ")--------("; ((present_place=="University") ? (cout << RED << "x" << reset) : (cout << "10"));
+        cout << ")--------("; ((present_place=="Appliance Store") ? (cout << RED << "x" << reset) : (cout << "11"));
+        cout << ")--------("; ((present_place=="Culture Center") ? (cout << RED << "x" << reset) : (cout << "12"));
+        cout << ")-------->" << endl <<YEL<< "Energy : " << energy <<reset << endl <<BLU << "Now you are at " << present_place << reset << endl ;
+
+        
+        cout << endl;
+        cout << "(1)  VexCorp" << endl;
+        cout << "(2)  Mall" << endl;
+        cout << "(3)  Gym" << endl;
+        cout << "(4)  Market" << endl;
+        cout << "(5)  Lousy Housing" << endl;
+        cout << "(6)  Bank" << endl;
+        cout << "(7)  Cluckers" << endl;
+        cout << "(8)  Job Office" << endl;
+        cout << "(9)  Fancy Housing" << endl;
+        cout << "(10) University" << endl;
+        cout << "(11) Appliance Store" << endl;
+        cout << "(12) Culture Center" << endl;
+    }
 }
