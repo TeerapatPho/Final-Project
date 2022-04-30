@@ -101,8 +101,6 @@ game::~game()
 
 void game::change_round()
 {
-
-    // cout << "Heloo";
     static int start = rand() % max_round + 2;
     static int stop = rand() % ((max_round < 5) ? (1) : (max_round / 5)) + start + 3;
 
@@ -210,16 +208,17 @@ void game::next_player_turn()
             if (play_board->get_plIndex(plname) == -1)
                 continue;
             int distance = play_board->cal_distance_template(p->get_and_change_current_place(), plname); // get distance and do decrease energy
-            // way to travel
-            if (player_q.front()->get_and_change_car_type() == "Walk")
-                p->get_and_change_energy(-distance * 10);
-            else if (player_q.front()->get_and_change_car_type() == "Vexportation Pass")
-                p->get_and_change_energy(-distance * 8);
-            else if (player_q.front()->get_and_change_car_type() == "Electric Scooter")
-                p->get_and_change_energy(-distance * 6);
-            else if (player_q.front()->get_and_change_car_type() == "Nikola Electric")
-                p->get_and_change_energy(-distance * 3);
-
+            // way to travel 
+            if(play_board->get_board() != 3) { 
+                if (player_q.front()->get_and_change_car_type() == "Walk")
+                    p->get_and_change_energy(-distance * 10);
+                else if (player_q.front()->get_and_change_car_type() == "Vexportation Pass")
+                    p->get_and_change_energy(-distance * 8);
+                else if (player_q.front()->get_and_change_car_type() == "Electric Scooter")
+                    p->get_and_change_energy(-distance * 6);
+                else if (player_q.front()->get_and_change_car_type() == "Nikola Electric")
+                    p->get_and_change_energy(-distance * 3);
+            }
             p->get_and_change_current_place(plname);
 
             break;

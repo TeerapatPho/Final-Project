@@ -250,9 +250,7 @@ void player::calculation_card_by_stat()
     if (health < 100)
         get_card(situation_card_deck[2]);
 }
-/*int player::bag_check(string check_obj){
-    return bag.find(check_obj);
-}*/
+
 bool player::buying(int cost) // แก้ check ว่ามี VexPhone หรือไม่
 {
     try

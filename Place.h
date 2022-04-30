@@ -84,10 +84,10 @@ private:
 public:
     restaurant() : place("Cluckers", "The best fast food in town, soooo gooood!")
     {
-        product.insert(product.end(), sell_object("Clucker Burger", 95, -10, 10, 0, true, 1)); //ฟามจิงใช้ push_back ก็ได้แหละ ใช้ insert ทำไมวะ???? ดึงๆ
+        product.insert(product.end(), sell_object("Clucker Burger", 95, -10, 10, 0, true, 1));
         product.insert(product.end(), sell_object("Clucker Bucket", 120, -10, 20, 0, true, 1));
         product.insert(product.end(), sell_object("Fries", 75, -10, -10, 0, true, 1));
-        product.insert(product.end(), sell_object("Soda", 25, -10, 10, 0, false, 1));
+        product.insert(product.end(), sell_object("Soda", 25, -10, 10, 0, false, 1)); 
         product.insert(product.end(), sell_object("Shake", 50, -10, 10, 0, false, 1));
         product.insert(product.end(), sell_object("Bear Combo", 150, 0, 20, 0, true, 1));
 
@@ -376,7 +376,6 @@ public:
         product.insert(product.end(), sell_object("Carpet", 400, 0, 65, 0, false, 1));
         product.insert(product.end(), sell_object("Movie Poster", 150, 0, 30, 0, false, 1));
         product.insert(product.end(), sell_object("Lemon Tree", 100, 0, -10, 0, false, 1));
-        // i wonder how, i wonder why. yesterday you told me bout the blue blue sky. At all that I can see it's just another lemon tree~ -> ร้องเพลงแหละะ
 
         vector<int> req;
         job.push_back({"Janitor", 6, {0, 0}});
@@ -581,7 +580,7 @@ void home::ui(player *p)
             // rent btn
             cout << "Rent Cost: " << cost << endl;
             string choice = selection_menu<string>(get_name(), {}, {"Rent", "Return", " "}, [&]() -> void {});
-            if (choice == "Return")
+            if (choice == "Return") 
                 return;
             else if (choice == "Rent")
             {
@@ -710,7 +709,7 @@ void job_office::ui(player *p)
         });
         int salary = check_requirement(p, jb_choice, name2placePtr(choice));
         try  {
-            if (salary != -1) // try catch?
+            if (salary != -1) 
             {
                 p->get_and_change_metier(jb_choice);
                 p->get_and_change_work_place(choice);
